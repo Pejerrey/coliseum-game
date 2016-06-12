@@ -26,7 +26,6 @@ class GameWindow < Gosu::Window
 		#puts "Thread Finished"
 	  end.run
 	end
-	
   end
 
   def draw()
