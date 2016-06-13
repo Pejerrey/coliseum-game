@@ -2,7 +2,7 @@
 
 ## Main Flow Chart
 A Game Window has one or more scenes. Each one of them is updated and drawn in every iteration of the loop.  
-Each Scene has a Director and an Object Pool. The objects defines the content of a scene, they interact with the user and other objects. The Director is the mechanism to control how a scene plays, it holds which phase it's currently going through.
+Each Scene has a Director and an Object Pool. The Objects define the content of a scene, they interact with the user, and between each other. The Director holds which phase a scene is currently going through.
 
 ## Objects
 * Static Image -what is says on the tin-
