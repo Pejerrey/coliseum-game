@@ -8,7 +8,7 @@ class GameWindow < Gosu::Window
 	@active_keys = []
 	@pushed_keys = []
 	@released_keys = []
-	@log = Log.new(self)
+	@log = nil
   end
 
   
@@ -56,6 +56,10 @@ class GameWindow < Gosu::Window
   
   def remove_scene(scene)
     @scenes.delete(scene)
+  end
+  
+  def start_log()
+    @log = Log.new()
   end
   
   
