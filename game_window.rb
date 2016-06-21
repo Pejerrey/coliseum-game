@@ -21,9 +21,7 @@ class GameWindow < Gosu::Window
 	@released_keys.clear
 	if $DEBUG_MODE && Thread.list.size == 1
 	  Thread.new do
-	    #puts "Thread Started"
 	    @log.log()
-		#puts "Thread Finished"
 	  end.run
 	end
   end

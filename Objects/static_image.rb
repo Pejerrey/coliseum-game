@@ -4,8 +4,8 @@ class StaticImage
   def initialize(tag, image, x, y, z = 0)
     @tag = tag
     @image = image
-	@x = x >= 0 ? x : $window.width + x 
-	@y = y >= 0 ? y : $window.height + y 
+	@x = x 
+	@y = y 
 	@z = z
   end
   

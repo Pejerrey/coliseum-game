@@ -48,6 +48,6 @@ class Vector
   
   #Draw Functions
   def draw(center)
-	Gosu.draw_line()
+	#Gosu.draw_line()
   end
 end

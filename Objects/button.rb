@@ -7,31 +7,32 @@ class Button
   def initialize(tag, active_area)
 	@tag = tag
 	@active_area = active_area
-	
 	@pushing = false
 	@activated = false
   end
   
-  def draw()
-    Utils.draw_rect(@active_area)
-  end
-  
   #Action
   def update()
-    #Upload Input
-	mouse_pos = Point.new($window.mouse_x, $window.mouse_y)
+    mouse_pos = { :x => $window.mouse_x, :y => $window.mouse_y}
     if @pushing
-	  unless Utils.inside_rect?(mouse_pos, @active_area)
+	  unless @active_area.holds?(mouse_pos)
 	    @pushing = false
 	  end
 	  if $window.released?(MSLEFT)
 	    @activated = true
       end
 	else
-	  if $window.pushed?(MSLEFT) && Utils.inside_rect?(mouse_pos, @active_area)
+	  if $window.pushed?(MSLEFT) && @active_area.holds?(mouse_pos)
 	    @pushing = true
 	  end
 	end
   end
   
+  def draw()
+    @active_area.draw()
+  end
+  
+  def activated?()
+    @activated
+  end
 end

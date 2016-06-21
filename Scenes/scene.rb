@@ -10,12 +10,16 @@ class Scene
   
   def update()
     @object_pool.each do |object|
-	  object.update if object.respond_to?(:update)
+	  object.update() if object.respond_to?(:update)
 	end
   end
   
   def draw()
+    @object_pool.each do |object|
+	  object.draw() if object.respond_to?(:draw)
+	end
   end
+  
   
   def obj(sym)
     obj = @object_pool.find{ |elem| elem.tag == sym }
@@ -23,11 +27,7 @@ class Scene
 	return obj
   end
   
-  def buttons()
-    @object_pool.select{ |x| x.class == Button }
-  end
-  
-  def images()
-    @object_pool.select{ |x| x.class === StaticImage }
+  def visible?()
+    @visible
   end
 end

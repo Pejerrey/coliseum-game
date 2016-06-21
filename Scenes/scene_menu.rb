@@ -11,19 +11,21 @@ class SceneMenu < Scene
 	when :menu
 	  if @entry
 	    @object_pool << StaticImage.new(:i_newgame,
-		                 Gosu::Image.from_text("New Game", 30), 100, 100) 
-		@object_pool << Button.new(:b_newgame, @object_pool.last.bounds)
+		                 Gosu::Image.from_text("New Game", 30),
+						 100, 100) 
+		@object_pool << Button.new(:b_newgame, obj(:i_newgame).bounds)
 	    @object_pool << StaticImage.new(:i_exit, 
-		                 Gosu::Image.from_text("Exit", 30), 100, 150)
-		@object_pool << Button.new(:b_exit, @object_pool.last.bounds)
+		                 Gosu::Image.from_text("Exit", 30),
+						 100, 150)
+		@object_pool << Button.new(:b_exit, obj(:i_exit).bounds)
 		@entry = false
 	  else
 		super()
-		if (obj(:b_newgame).activated)
+		if (obj(:b_newgame).activated?)
 		  $window.add_scene(ScenePlaytest.new())
 		  $window.remove_scene(self)
 		end
-		if (obj(:b_exit).activated)
+		if (obj(:b_exit).activated?)
 		  $window.close()
 		end
 	  end
@@ -36,9 +38,7 @@ class SceneMenu < Scene
 	when :intro
 	
 	when :menu
-	  unless @entry
-	    @object_pool.each { |image| image.draw() }
-	  end
+	  super()
 	end
 	
   end

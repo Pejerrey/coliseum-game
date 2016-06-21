@@ -9,9 +9,13 @@ class ScenePlaytest < Scene
 	  @director = :loop
 	  
 	when :loop
-	  #Things go here
-	  #Update Controllers
-	  #
+	  if @entry
+	    @object_pool << Body.new(:r_guy, 50, Circle.new(250, 300, 30))  
+		@entry = false
+	  else
+	    obj(:r_guy).x += 5.5
+		puts obj(:r_guy).right()
+	  end
 	  
 	end
 	
@@ -22,7 +26,7 @@ class ScenePlaytest < Scene
 	when :intro
 	
 	when :loop
-	  #Pictures go here
+	  super()
 	  
 	end
 	

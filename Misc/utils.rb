@@ -86,7 +86,7 @@ module Utils
   
   
   #Rendering Section
-  def self.draw_rect(rectangle, z = 0)
+  def self.draw_rect(rectangle, z = 100)
     x = rectangle.x
 	y = rectangle.y
 	width = rectangle.width
@@ -98,7 +98,7 @@ module Utils
     Gosu::draw_line(x - width/2, y - height/2, color, x - width/2, y + height/2, color, z)
   end
   
-  def self.draw_circ(circle, z = 0)
+  def self.draw_circ(circle, z = 100)
     x = circle.x
 	y = circle.y
 	radius = circle.radius
