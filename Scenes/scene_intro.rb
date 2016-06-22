@@ -4,9 +4,10 @@ class SceneIntro < Scene
   end
   
   def update()
+    super()
     case @director
 	when :intro
-	  @director = :loading
+	  direct_to(:loading)
 	  
 	when :loading
 	  if @entry
@@ -34,9 +35,7 @@ class SceneIntro < Scene
 	when :intro
 	
 	when :loading
-	  unless @entry
-	    @object_pool.each { |image| image.draw() }
-	  end
+	  super()
 	end
 	
   end

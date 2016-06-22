@@ -99,13 +99,27 @@ module Utils
   end
   
   def self.draw_circ(circle, z = 100)
-    x = circle.x
-	y = circle.y
+  	#Circle equation: x^2 + y^2 = r^2
+	#    => sqrt(r^2 - x^2) = y
+	
 	radius = circle.radius
 	color = circle.color
-	Gosu::draw_line(x - radius/2, y + radius/2, color, x + radius/2, y + radius/2, color, z)
-    Gosu::draw_line(x + radius/2, y + radius/2, color, x + radius/2, y - radius/2, color, z)
-    Gosu::draw_line(x + radius/2, y - radius/2, color, x - radius/2, y - radius/2, color, z)
-    Gosu::draw_line(x - radius/2, y - radius/2, color, x - radius/2, y + radius/2, color, z)
+		
+	stp = radius/10.0
+	[-1,1].each do |sign|
+	  (-radius...radius).step(stp) do |x|
+	    a = { :x => x,  :y => sign * circ_f(x, radius) }
+	    b = { :x => x + stp,  :y => sign * circ_f(x + stp, radius) }
+	    a[:x] += circle.x
+	    a[:y] += circle.y
+	    b[:x] += circle.x
+	    b[:y] += circle.y
+	    Gosu::draw_line(a[:x], a[:y], color, b[:x], b[:y], color, z)
+	  end
+	end
+  end
+  
+  def self.circ_f(x, r) #Positive only
+    return Math.sqrt(r**2 - x**2)
   end
 end

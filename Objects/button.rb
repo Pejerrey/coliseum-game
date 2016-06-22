@@ -28,11 +28,18 @@ class Button
 	end
   end
   
+  def deactivate()
+    @activated = false
+  end
+  
   def draw()
     @active_area.draw()
   end
   
   def activated?()
-    @activated
+    if @activated
+	  @activated = false
+	  return true
+	end
   end
 end

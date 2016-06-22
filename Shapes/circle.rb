@@ -12,17 +12,43 @@ class Circle
   end
   
   #Collision
-  def holds?(px, py)
-    return distance(px, py, @x, @y) <= @radius
+  def holds?(point)
+    return Gosu::distance(point[:x], point[:y], @x, @y) <= @radius
+  end
+  
+  def intersects?(seg)
+    #Initialize points as vectors
+	a = Vector.new(seg.a)
+	b = Vector.new(seg.b)
+	c = Vector.new({ :x => @x, :y => @y})
+	#Work from the beginning of the segment
+	ab = b - a
+    ac = c - a
+	#Get the scalar proyection from ac to ab
+	s = (ab * ac) / ab.norm()
+	if s < 0
+	  closest = Vector.new({ :x => 0, :y => 0 })
+	elsif s > ab.norm()
+	  closest = ab
+	else
+	  closest = ab.unit_vector() * s #Proyection
+	end
+	return ac.distance(closest) <= @radius
   end
   
   def collides_with?(shape)
     if shape.is_a?(Circle)
 	  circle = shape
 	  return distance(@x, @y, shape.x, shape.y) <= @radius + circle.radius
-	elsif shape.is_a?(Rectangle)
-	  rectangle = shape
-	  
+	elsif shape.is_a?(Polygon)
+	  polygon = shape
+	  if polygon.holds?({ :x => @x, :y => @y })
+	    return true
+	  elsif polygon.segments.any? { |seg| self.intersects?(seg) }
+	    return true
+	  else
+	    return false
+	  end
 	else
 	  raise "Shape not recognized for collision with circle"
 	end

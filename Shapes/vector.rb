@@ -3,19 +3,18 @@ class Vector
   
   #Initialization
   attr_accessor :x, :y, :c
-  def initialize(init, c = GREEN)
-    if init[:point]
-	  @x, @y = init[:point]
-	elsif init[:polar]
-	  angle, norm = init[:polar]
-	  @x = Gosu::offset_x(angle, norm)
-	  @y = Gosu::offset_y(angle, norm)
+  def initialize(args, c = GREEN)
+    if args[:x] && args[:y]
+	  @x = args[:x]
+	  @y = args[:y]
+	elsif args[:angle] && args[:norm]
+	  @x = Gosu::offset_x(args[:angle], args[:norm])
+	  @y = Gosu::offset_y(args[:angle], args[:norm])
 	else
 	  raise "Invalid initialization of Vector."
 	end
 	@c = c
   end
-  
   
   #Coordinate Transformation
   def point_to(x, y)
@@ -45,9 +44,54 @@ class Vector
     @y = Gosu::offset_y(angle_t, norm_t)    
   end
   
+  def angle_diff(vector)
+    Gosu::angle_diff(@x, @y, vector.x, vector.y)
+  end
+  
+  def distance(vector)
+    Gosu::distance(@x, @y, vector.x, vector.y)
+  end
+  
+  def unit_vector()
+    return self / norm()
+  end
+  
+  
+  #Operators
+  def +(vector)
+    return Vector.new({ :x => @x + vector.x, :y => @y + vector.y})
+  end
+  
+  def -@
+    return Vector.new({ :x => -@x, :y => -@y })
+  end
+  
+  def -(vector)
+    return self + (-vector)
+  end
+  
+  def *(arg)
+    if arg.is_a?(Numeric)
+	  return Vector.new({ :x => @x * arg, :y => @y * arg})
+    elsif arg.is_a?(Vector)
+	  return @x * arg.x + @y * arg.y
+	else
+	  raise "Invalid argument in vector multiplication"
+    end
+  end
+  
+  def /(scalar)
+    return self * (1/scalar)
+  end
   
   #Draw Functions
   def draw(center)
-	#Gosu.draw_line()
+    if center.is_a?(Vector)
+	  Gosu.draw_line(center.x, center.y, c, center.x + @x, center.y + @y, c, 100)
+	elsif center.is_a?(Hash)
+	  Gosu.draw_line(center[:x], center[:y], c, center[:x] + @x, center[:y] + @y, c, 100)
+	else
+	  raise "Invalid type of center for vector drawing"
+	end
   end
 end

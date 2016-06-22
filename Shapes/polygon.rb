@@ -10,6 +10,7 @@ class Polygon
 	end
 	raise "Less than three vertex provided" if vertex.size < 3
   end
+  # A polygon requires at least 3 vertex
   
   def segments
     arr = []
@@ -27,35 +28,23 @@ class Polygon
   def holds?(point)
     #Vertical ray casting from above
 	y_edges = []
-	segments.each do |segment|
-	  a_s = segment.a
-	  b_s = segment.b
-	  if (a_s[:x]-b_s[:x]) == 0 then next end
-	  edge_wannabe = (point[:x] - a_s[:x]) * (a_s[:y]-b_s[:y])/(a_s[:x]-b_s[:x]) + a_s[:y]
-	  
-	if vertex[0][:x] == 163
-	  puts "Behold: "
-	  puts edge_wannabe
-	  puts a_s[:y] - b_s[:y]
-	  puts a_s[:x]-b_s[:x]
-	  puts (a_s[:y]-b_s[:y]) / (a_s[:x]-b_s[:x])
-	  puts ""
-	end
-	  
-	  
-	  if edge_wannabe.in_between?(a_s[:y], b_s[:y]) ||
-	     (a_s[:y] == b_s[:y] && point[:x].in_between?(a_s[:x], b_s[:x]))
-	    if edge_wannabe < point[:y]
-	      y_edges << edge_wannabe
-		end
+	segments.each do |seg|
+	  if seg.a[:x] - seg.b[:x] != 0                     #Disregard vertical segments
+	    if point[:x].in_between?(seg.a[:x], seg.b[:x])  #Ray and segment may intersect
+		  edge = seg.a[:y] + (point[:x] - seg.a[:x]) *
+		         ((seg.a[:y] - seg.b[:y])/(seg.a[:x] - seg.b[:x]))
+		  y_edges << edge if edge < point[:y]
+	    end
 	  end
 	end
 	return y_edges.size % 2 == 1
+  end
+  
+  def intersects?(seg)
+    
   end
   
   def draw()
     segments.each { |segment| segment.draw() }
   end
 end
-
-# A polygon requires at least 3 vertex

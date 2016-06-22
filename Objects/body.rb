@@ -28,6 +28,18 @@ class Body
   def top=(top) @shape.top = top end
   def bottom=(bottom) @shape.bottom = bottom end
   
+  def holds?(point)
+    @shape.holds?(point)
+  end
+  
+  def intersects?(segment)
+    @shape.intersects?(segment)
+  end
+  
+  def collisions?(shape)
+    @shape.collisions(shape)
+  end
+  
   def bounds()
     return @shape
   end

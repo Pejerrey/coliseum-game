@@ -3,33 +3,43 @@ class ScenePlaytest < Scene
     super
   end
   
+  
   def update()
+    super()
     case @director
 	when :intro
-	  @director = :loop
+	  @object_pool << Button.new(:b_screen, Rectangle.new($window.width/2, $window.height/2, $window.width, $window.height))
+	  @object_pool << Body.new(:r_guy, 50, Circle.new(250, 300, 30))  
+	  direct_to(:neutral)
 	  
-	when :loop
-	  if @entry
-	    @object_pool << Body.new(:r_guy, 50, Circle.new(250, 300, 30))  
-		@entry = false
-	  else
-	    obj(:r_guy).x += 5.5
-		puts obj(:r_guy).right()
+	when :neutral
+	  if (obj(:b_screen).activated?)
+		direct_to(:holding)
+		@point_a = { :x => $window.mouse_x, :y => $window.mouse_y }
 	  end
-	  
-	end
 	
+	when :holding
+	  @segment = Segment.new(@point_a[:x], @point_a[:y], $window.mouse_x, $window.mouse_y)
+	  direct_to(:neutral) if obj(:b_screen).activated?
+	  puts "CUTS" if obj(:r_guy).intersects?(@segment)
+	
+	end
   end
+  
   
   def draw()
     case @director
 	when :intro
+	  super()
 	
-	when :loop
+	when :neutral
+	  super()
+	  
+	when :holding
 	  super()
 	  
 	end
-	
   end
+  
   
 end

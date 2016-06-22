@@ -4,9 +4,10 @@ class SceneMenu < Scene
   end
   
   def update()
+    super()
     case @director
 	when :intro
-	  @director = :menu
+	  direct_to(:menu)
 	  
 	when :menu
 	  if @entry
@@ -20,7 +21,6 @@ class SceneMenu < Scene
 		@object_pool << Button.new(:b_exit, obj(:i_exit).bounds)
 		@entry = false
 	  else
-		super()
 		if (obj(:b_newgame).activated?)
 		  $window.add_scene(ScenePlaytest.new())
 		  $window.remove_scene(self)
