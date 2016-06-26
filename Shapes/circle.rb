@@ -2,7 +2,7 @@ class Circle
   include Shape
   include Constants
   
-  #Initialization
+  ##Initialization
   attr_accessor :x, :y, :radius, :color
   def initialize(x, y, radius, color = YELLOW)
     @x = x
@@ -11,20 +11,28 @@ class Circle
 	@color = color
   end
   
-  #Collision
+  ##Accessors
+  def width() @radius * 2 end
+  def height() @radius * 2 end
+  def left() @x - @radius/2 end
+  def right() @x + @radius/2 end
+  def top() @y - @radius/2 end
+  def bottom() @y + @radius/2 end
+  def left=(left) @x = left + @radius/2 end
+  def right=(right) @x = right - @radius/2 end
+  def top=(top) @y = top + @radius/2 end
+  def bottom=(bottom) @y = bottom - @radius/2 end
+  
+  ##Collision
   def holds?(point)
     return Gosu::distance(point[:x], point[:y], @x, @y) <= @radius
   end
   
   def intersects?(seg)
-    #Initialize points as vectors
-	a = Vector.new(seg.a)
-	b = Vector.new(seg.b)
-	c = Vector.new({ :x => @x, :y => @y})
-	#Work from the beginning of the segment
-	ab = b - a
-    ac = c - a
-	#Get the scalar proyection from ac to ab
+     #Initialize points as vectors and calculate from a
+	ab = Vector.new(seg.b) - Vector.new(seg.a)
+    ac = Vector.new({ :x => @x, :y => @y}) - Vector.new(seg.a)
+	 #Get the scalar proyection from ac to ab
 	s = (ab * ac) / ab.norm()
 	if s < 0
 	  closest = Vector.new({ :x => 0, :y => 0 })
@@ -42,32 +50,30 @@ class Circle
 	  return distance(@x, @y, shape.x, shape.y) <= @radius + circle.radius
 	elsif shape.is_a?(Polygon)
 	  polygon = shape
-	  if polygon.holds?({ :x => @x, :y => @y })
-	    return true
-	  elsif polygon.segments.any? { |seg| self.intersects?(seg) }
-	    return true
-	  else
-	    return false
-	  end
+	  return polygon.holds?({ :x => @x, :y => @y }) ||
+	         polygon.segments.any? { |seg| self.intersects?(seg) }
 	else
 	  raise "Shape not recognized for collision with circle"
 	end
   end
   
-  #Indirect Attributes
-  def width() @radius * 2 end
-  def height() @radius * 2 end
-  def left() @x - @radius/2 end
-  def right() @x + @radius/2 end
-  def top() @y - @radius/2 end
-  def bottom() @y + @radius/2 end
-  def left=(left) @x = left + @radius/2 end
-  def right=(right) @x = right - @radius/2 end
-  def top=(top) @y = top + @radius/2 end
-  def bottom=(bottom) @y = bottom - @radius/2 end
-  
-  #Draw
+  ##Show
   def draw()
-    Utils.draw_circ(self)
+	stp = @radius/15.0
+	[-1,1].each do |sign|
+	  (-@radius...@radius).step(stp) do |x|
+	    a = { :x => x,  :y => sign * circ_f(x, radius) }
+	    b = { :x => x + stp,  :y => sign * circ_f((x + stp).round, @radius) }
+	    a[:x] += @x
+	    a[:y] += @y
+	    b[:x] += @x
+	    b[:y] += @y
+	    Gosu::draw_line(a[:x], a[:y], color, b[:x], b[:y], color, 100)
+	  end
+	end
+  end
+  
+  def circ_f(x, r) #Positive only
+    return Math.sqrt(r**2 - x**2)
   end
 end

@@ -1,7 +1,7 @@
 class Vector
   include Constants
   
-  #Initialization
+  ##Constructor
   attr_accessor :x, :y, :c
   def initialize(args, c = GREEN)
     if args[:x] && args[:y]
@@ -16,13 +16,17 @@ class Vector
 	@c = c
   end
   
-  #Coordinate Transformation
+  #Accessors
   def point_to(x, y)
     @x = x
 	@y = y
   end
   
-  #Polar Transformation
+  def direct_to(angle_t, norm_t)
+	@x = Gosu::offset_x(angle_t, norm_t)
+    @y = Gosu::offset_y(angle_t, norm_t)    
+  end
+  
   def angle()
     Gosu::angle(0, 0, @x, @y)
   end
@@ -38,26 +42,8 @@ class Vector
   def norm=(norm_t)
     direct_to(angle, norm_t)
   end
-  
-  def direct_to(angle_t, norm_t)
-	@x = Gosu::offset_x(angle_t, norm_t)
-    @y = Gosu::offset_y(angle_t, norm_t)    
-  end
-  
-  def angle_diff(vector)
-    Gosu::angle_diff(@x, @y, vector.x, vector.y)
-  end
-  
-  def distance(vector)
-    Gosu::distance(@x, @y, vector.x, vector.y)
-  end
-  
-  def unit_vector()
-    return self / norm()
-  end
-  
-  
-  #Operators
+    
+  ##Operators
   def +(vector)
     return Vector.new({ :x => @x + vector.x, :y => @y + vector.y})
   end
@@ -84,7 +70,19 @@ class Vector
     return self * (1/scalar)
   end
   
-  #Draw Functions
+  def angle_diff(vector)
+    Gosu::angle_diff(@x, @y, vector.x, vector.y)
+  end
+  
+  def distance(vector)
+    Gosu::distance(@x, @y, vector.x, vector.y)
+  end
+  
+  def unit_vector()
+    return self / norm()
+  end
+  
+  ##Show
   def draw(center)
     if center.is_a?(Vector)
 	  Gosu.draw_line(center.x, center.y, c, center.x + @x, center.y + @y, c, 100)

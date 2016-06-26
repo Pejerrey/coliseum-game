@@ -1,10 +1,11 @@
 class Polygon
+  include Shape
+  
+  ##Constructor
   attr_accessor :x, :y
   def initialize(args)
-    #Center
     @x = args.shift
 	@y = args.shift
-	#Vertex
     @vertex = []
 	until args.empty?
 	  vx = args.shift
@@ -15,7 +16,7 @@ class Polygon
 	raise "Less than three vertex provided" if @vertex.size < 3
   end
   
-  #Getters
+  ##Accessors
   def zero_vertex
     @vertex
   end
@@ -42,9 +43,9 @@ class Polygon
                                        s.b[:x] + @x, s.b[:y] + @y)}
   end
   
-  #Collision
+  ##Collision
   def holds?(point)
-    #Vertical ray casting from above
+     #Vertical ray casting from above
 	y_edges = []
 	segments.each do |seg|
 	  if seg.a[:x] - seg.b[:x] != 0                            #Disregard vertical segments
@@ -59,15 +60,15 @@ class Polygon
   end
   
   def intersects?(seg)
-    #For collision to happen, either a point in the segment is inside the polygon
-	# or they're both outside, and there's a segment intersection
     if holds?(seg.a) || holds?(seg.b)
 	  return true
 	else
 	  segments.each do |p_seg|
+	     #Case both vertical segments 
 	    if seg.a[:x] == seg.b[:x] && p_seg.a[:x] == p_seg.b[:x]
 		  return true if seg.a[:x] == p_seg.a[:x] &&                               #Aligned
 		                 Utils.in_between?(seg.a[:y], p_seg.a[:y], p_seg.b[:y])    #Touches
+		 #Case "seg" vertical
 		elsif seg.a[:x] == seg.b[:x] && p_seg.a[:x] != p_seg.b[:x]
 		  ps_slope = (p_seg.a[:y] - p_seg.b[:y])/(p_seg.a[:x] - p_seg.b[:x])
 	      ps_intercept = p_seg.a[:y] - ps_slope * p_seg.a[:x]
@@ -75,6 +76,7 @@ class Polygon
 		  collision_y = ps_slope * collision_x + ps_intercept
 		  return true if Utils.in_between?(collision_y, seg.a[:y], seg.b[:y]) &&
 			             Utils.in_between?(collision_x, p_seg.a[:x], p_seg.b[:x])
+		 #Case "p_seg" vertical
 		elsif seg.a[:x] != seg.b[:x] && p_seg.a[:x] == p_seg.b[:x]
 		  s_slope = (seg.a[:y] - seg.b[:y])/(seg.a[:x] - seg.b[:x])
 	      s_intercept = seg.a[:y] - s_slope * seg.a[:x]
@@ -82,14 +84,14 @@ class Polygon
 		  collision_y = s_slope * collision_x + s_intercept
 		  return true if Utils.in_between?(collision_x, seg.a[:x], seg.b[:x]) &&
 			             Utils.in_between?(collision_y, p_seg.a[:y], p_seg.b[:y])
+		 #Case none vertical
 		elsif seg.a[:x] != seg.b[:x] && p_seg.a[:x] != p_seg.b[:x]
 	      s_slope = (seg.a[:y] - seg.b[:y])/(seg.a[:x] - seg.b[:x])
 	      s_intercept = seg.a[:y] - s_slope * seg.a[:x] #b = y - mx
 	      ps_slope = (p_seg.a[:y] - p_seg.b[:y])/(p_seg.a[:x] - p_seg.b[:x])
 	      ps_intercept = p_seg.a[:y] - ps_slope * p_seg.a[:x]
-	      unless s_slope == ps_slope     #If they're colinear they won't touch
+	      unless s_slope == ps_slope
 		    collision_x = (ps_intercept - s_intercept)/(s_slope - ps_slope)
-			#All that's left is to check the collision happened between the segments
 		    return true if Utils.in_between?(collision_x, seg.a[:x], seg.b[:x]) &&
 			               Utils.in_between?(collision_x, p_seg.a[:x], p_seg.b[:x])
 	      else
@@ -109,30 +111,13 @@ class Polygon
 	         polygon.segments.any? { |seg| intersects?(seg) }
 	elsif shape.is_a?(Circle)
 	  circle = shape
-	  if holds?({ :x => circle.x, :y => circle.y })
-	    return true
-	  elsif segments.any? { |seg| circle.intersects?(seg) }
-	    return true
-	  else
-	    return false
-	  end
+	  return circle.collides?(self)
 	else
-	  raise "Shape not recognized for collision with circle"
+	  raise "Shape not recognized for collision with polygon"
 	end
   end
   
-  #Indirect Attributes
-  def x()
-    vertex.inject{ |acc, ver| acc + ver[:x] } / vertex.size
-  end
-  
-  def y()
-    vertex.inject{ |acc, ver| acc + ver[:x] } / vertex.size
-  end
-  
-  def x=(x) @x = x end
-  def y=(y) @y = y end
-
+  ##Show
   def draw()
     segments.each { |segment| segment.draw() }
   end
