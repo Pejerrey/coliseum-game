@@ -36,8 +36,8 @@ class Body
     @shape.intersects?(segment)
   end
   
-  def collisions?(shape)
-    @shape.collisions(shape)
+  def collides?(body)
+    @shape.collides?(body.shape)
   end
   
   def bounds()

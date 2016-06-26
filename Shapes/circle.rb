@@ -36,7 +36,7 @@ class Circle
 	return ac.distance(closest) <= @radius
   end
   
-  def collides_with?(shape)
+  def collides?(shape)
     if shape.is_a?(Circle)
 	  circle = shape
 	  return distance(@x, @y, shape.x, shape.y) <= @radius + circle.radius

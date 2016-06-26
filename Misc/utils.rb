@@ -2,6 +2,10 @@ require 'gosu'
 
 module Utils
   #Math Section
+  def self.in_between?(c, a, b)
+    return (c <= a && b <= c) || (c <= b && a <= c)
+  end
+  
   def self.hypotenuse(a, b)
     Math.sqrt(a**2 + b**2)
   end
