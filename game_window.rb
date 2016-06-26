@@ -19,10 +19,13 @@ class GameWindow < Gosu::Window
     end
 	@pushed_keys.clear
 	@released_keys.clear
-	if $DEBUG_MODE && Thread.list.size == 1
-	  Thread.new do
-	    @log.log()
-	  end.run
+	if $DEBUG_MODE
+	  $window.caption = Gosu::fps
+	  if Thread.list.size == 1
+	    Thread.new do
+	      @log.log()
+	    end.run
+	  end
 	end
   end
 

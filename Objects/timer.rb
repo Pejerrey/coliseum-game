@@ -1,6 +1,8 @@
 class Timer
   ##Public Methods
-  def initialize()
+  attr_accessor :tag
+  def initialize(tag)
+    @tag = tag
     @start_point = -1
 	@end_point = -1
   end
