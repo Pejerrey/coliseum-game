@@ -3,10 +3,10 @@ class SceneIntro < Scene
     super()	
     case @director
 	when :intro_init
-	  @object_pool << StaticImage.new(:i_loading,
+	  @object_pool << Image.new(:i_loading,
 		               Gosu::Image.from_text("Loading", 20),
 		   			   $window.width - 100, $window.height - 50, 1) 
-	  @object_pool << StaticImage.new(:i_grin,
+	  @object_pool << Image.new(:i_grin,
 		               Gosu::Image.new("grin.png"),
 					   $window.width - 200,$window.height - 240, 0)
 	  @object_pool << Timer.new(:t_load)
