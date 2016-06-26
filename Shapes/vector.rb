@@ -11,7 +11,8 @@ class Vector
 	  @x = Gosu::offset_x(args[:angle], args[:norm])
 	  @y = Gosu::offset_y(args[:angle], args[:norm])
 	else
-	  raise "Invalid initialization of Vector."
+	  @x, @y = args
+	  raise "Invalid initialization of Vector." if !@x || !@y
 	end
 	@c = c
   end
