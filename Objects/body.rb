@@ -1,20 +1,14 @@
 class Body
   attr_accessor :tag, :mass, :shape
   
+  ##Contructor
   def initialize(tag, mass, shape)
     @tag = tag
 	@mass = mass
 	@shape = shape
   end
   
-  def update()
-    #Physics!
-  end
-  
-  def draw()
-    @shape.draw()
-  end
-  
+  ##Accessors  
   def x() @shape.x end
   def y() @shape.y end
   def x=(x) @shape.x = x end
@@ -27,7 +21,17 @@ class Body
   def right=(right) @shape.right = right end
   def top=(top) @shape.top = top end
   def bottom=(bottom) @shape.bottom = bottom end
+  def bounds() @shape end
   
+  ##Loop
+  def update()
+  end
+  
+  def draw()
+    @shape.draw()
+  end
+  
+  ##Collision
   def holds?(point)
     @shape.holds?(point)
   end
@@ -38,9 +42,5 @@ class Body
   
   def collides?(body)
     @shape.collides?(body.shape)
-  end
-  
-  def bounds()
-    return @shape
   end
 end

@@ -12,7 +12,8 @@ class SceneIntro < Scene
 	  @object_pool << Timer.new(:t_load)
 	  obj(:t_load).start(1000)
 	when :intro
-	  if obj(:t_load).done? #Stops itself
+	  if obj(:t_load).done?
+	    obj(:t_load).stop()
 		$window.add_scene(SceneMenu.new())
 		$window.remove_scene(self)
 	  end

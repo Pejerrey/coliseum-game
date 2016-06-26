@@ -68,6 +68,6 @@ class Circle
   
   #Draw
   def draw()
-    Utils.draw_circ(self) if $DEBUG_MODE
+    Utils.draw_circ(self)
   end
 end

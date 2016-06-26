@@ -1,6 +1,7 @@
 class StaticImage
   attr_accessor :tag, :image, :x, :y, :z
   
+  ##Constructor
   def initialize(tag, image, x, y, z = 0)
     @tag = tag
     @image = image
@@ -9,10 +10,7 @@ class StaticImage
 	@z = z
   end
   
-  def draw()
-    @image.draw(@x - width/2, @y - height/2, @z)
-  end
-  
+  ##Accessors
   def width() 
     return @image.width
   end
@@ -23,5 +21,10 @@ class StaticImage
   
   def bounds()
     return Rectangle.new(@x, @y, width, height)
+  end
+  
+  ##Loop
+  def draw()
+    @image.draw(@x - width/2, @y - height/2, @z)
   end
 end

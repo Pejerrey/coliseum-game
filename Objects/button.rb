@@ -1,7 +1,7 @@
 class Button
   include Constants
   
-  #Constructor
+  ##Constructor
   attr_accessor :active_area, :tag
   attr_accessor :mouse_pos, :ms_left_push, :ms_left_release, :pushing, :activated
   def initialize(tag, active_area)
@@ -11,7 +11,17 @@ class Button
 	@activated = false
   end
   
-  #Action
+  ##Accessors
+  def activated?()
+    if @activated
+	  @activated = false
+	  return true
+	else
+	  return false
+	end
+  end
+  
+  ##Loop
   def update()
     mouse_pos = { :x => $window.mouse_x, :y => $window.mouse_y}
     if @pushing
@@ -28,18 +38,7 @@ class Button
 	end
   end
   
-  def deactivate()
-    @activated = false
-  end
-  
-  def draw()
+  def debug_draw()
     @active_area.draw()
-  end
-  
-  def activated?()
-    if @activated
-	  @activated = false
-	  return true
-	end
   end
 end
