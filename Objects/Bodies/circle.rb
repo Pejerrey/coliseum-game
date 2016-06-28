@@ -11,15 +11,27 @@ class Circle
   end
   
   
-  ##COLLISION
-  def holds?(point, x, y)
-    return Gosu::distance(point[:x], point[:y], x, y) <= @radius
+  ##TRANSFORMATION
+  def move_to(x, y)
+    @x = x
+	@y = y
   end
   
-  def intersects?(seg, x, y)
+  def advance(x, y)
+    @x += x
+	@y += y
+  end
+  
+  
+  ##COLLISION
+  def holds?(point)
+    return Gosu::distance(point[:x], point[:y], @x, @y) <= @radius
+  end
+  
+  def intersects?(seg)
     #Initialize points as vectors and calculate from a
 	ab = Vector.new(seg.b) - Vector.new(seg.a)
-    ac = Vector.new({ :x => x, :y => y}) - Vector.new(seg.a)
+    ac = Vector.new({ :x => @x, :y => @y}) - Vector.new(seg.a)
 	#Get the scalar proyection from ac to ab
 	s = (ab * ac) / ab.norm()
 	if s < 0
@@ -32,16 +44,16 @@ class Circle
 	return ac.distance(closest) <= @radius
   end
   
-  def collides?(shape, x, y)
-    if shape.is_a?(Circle)
-	  circle = shape
-	  return distance(x, y, shape.x, shape.y) <= @radius + circle.radius
-	elsif shape.is_a?(Polygon)
-	  polygon = shape
+  def collides?(body)
+    if body.is_a?(Circle)
+	  circle = body
+	  return distance(x, y, body.x, body.y) <= @radius + circle.radius
+	elsif body.is_a?(Polygon)
+	  polygon = body
 	  return polygon.holds?({ :x => @x, :y => @y }) ||
 	         polygon.segments.any? { |seg| self.intersects?(seg) }
 	else
-	  raise "Shape not recognized for collision with circle"
+	  raise "Body not recognized for collision with circle"
 	end
   end
   
@@ -51,8 +63,8 @@ class Circle
 	stp = @radius/15.0
 	[-1,1].each do |sign|
 	  (-@radius...@radius).step(stp) do |x|
-	    a = { :x => x,  :y => sign * Math.sqrt(radius**2 - x**2) }
-	    b = { :x => x + stp,  :y => sign * circ_f((x + stp).round, @radius) }
+	    a = { :x => x, :y => sign * Math.sqrt(@radius**2 - x**2) }
+	    b = { :x => x + stp, :y => sign * Math.sqrt(@radius**2 - ((x + stp).round)**2) }
 	    a[:x] += @x
 	    a[:y] += @y
 	    b[:x] += @x

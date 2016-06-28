@@ -1,4 +1,5 @@
 class Polygon
+  include Constants
   attr_accessor :x, :y, :zero_vertex, :c
   
   ##CONSTRUCTOR
@@ -18,7 +19,11 @@ class Polygon
   
   
   ##ACCESSORS
-  def zero_segments
+  def vertex
+    @zero_vertex.map{ |v| { :x => v[:x] + @x, :y => v[:y] + @y} }
+  end
+  
+  def segments
     arr = []
     (0...vertex.size-1).each do |i|
 	  a = @zero_vertex[i]
@@ -28,16 +33,20 @@ class Polygon
     a = @zero_vertex.last
 	b = @zero_vertex.first
 	arr << Segment.new(a[:x], a[:y], b[:x], b[:y], @c)
-	return arr
-  end
-
-  def vertex
-    @zero_vertex.map{ |v| { :x => v[:x] + @x, :y => v[:y] + @y} }
+    return arr.map{ |s| Segment.new(s.a[:x] + @x, s.a[:y] + @y,
+                                    s.b[:x] + @x, s.b[:y] + @y)}
   end
   
-  def segments
-    zero_segments.map{ |s| Segment.new(s.a[:x] + @x, s.a[:y] + @y,
-                                       s.b[:x] + @x, s.b[:y] + @y)}
+  
+  ##TRANSFORMATION
+  def move_to(x, y)
+    @x = x
+	@y = y
+  end
+  
+  def advance(x, y)
+    @x += x
+	@y += y
   end
   
   
@@ -102,16 +111,16 @@ class Polygon
 	return false
   end
   
-  def collides?(shape)
-    if shape.is_a?(Polygon)
-	  polygon = shape
+  def collides?(body)
+    if body.is_a?(Polygon)
+	  polygon = body
 	  return segments.any? { |seg| polygon.intersects?(seg) } ||
 	         polygon.segments.any? { |seg| intersects?(seg) }
-	elsif shape.is_a?(Circle)
-	  circle = shape
+	elsif body.is_a?(Circle)
+	  circle = body
 	  return circle.collides?(self)
 	else
-	  raise "Shape not recognized for collision with polygon"
+	  raise "Body not recognized for collision with polygon"
 	end
   end
   
