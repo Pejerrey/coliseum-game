@@ -9,6 +9,6 @@ class Segment
   end
   
   def draw
-    Gosu::draw_line(@a[:x], @a[:y], c, @b[:x], @b[:y], c, 100) if $DEBUG_MODE
+    Gosu::draw_line(@a[:x], @a[:y], c, @b[:x], @b[:y], c, 100)
   end
 end

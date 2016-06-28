@@ -1,41 +1,38 @@
 class Polygon
-  include Shape
+  attr_accessor :x, :y, :zero_vertex, :c
   
-  ##Constructor
-  attr_accessor :x, :y
+  ##CONSTRUCTOR
   def initialize(args)
     @x = args.shift
 	@y = args.shift
-    @vertex = []
-	until args.empty?
+	raise "Couldn't initialize x and y on Polygon" unless @y
+    @zero_vertex = []
+	until args.size <= 1
 	  vx = args.shift
 	  vy = args.shift
-	  raise "Odd number of argumens for vertex initialization" if vy == nil
-	  @vertex << { :x => vx, :y => vy}
+	  @zero_vertex << { :x => vx, :y => vy}
 	end
-	raise "Less than three vertex provided" if @vertex.size < 3
+	raise "Less than three vertex provided" if @zero_vertex.size < 3
+	@c = args.empty? ? YELLOW : args.shift
   end
   
-  ##Accessors
-  def zero_vertex
-    @vertex
-  end
   
+  ##ACCESSORS
   def zero_segments
     arr = []
     (0...vertex.size-1).each do |i|
-	  a = zero_vertex[i]
-	  b = zero_vertex[i+1]
-	  arr << Segment.new(a[:x], a[:y], b[:x], b[:y])
+	  a = @zero_vertex[i]
+	  b = @zero_vertex[i+1]
+	  arr << Segment.new(a[:x], a[:y], b[:x], b[:y], @c)
 	end
-    a = zero_vertex.last
-	b = zero_vertex.first
-	arr << Segment.new(a[:x], a[:y], b[:x], b[:y])
+    a = @zero_vertex.last
+	b = @zero_vertex.first
+	arr << Segment.new(a[:x], a[:y], b[:x], b[:y], @c)
 	return arr
   end
 
   def vertex
-    zero_vertex.map{ |v| { :x => v[:x] + @x, :y => v[:y] + @y} }
+    @zero_vertex.map{ |v| { :x => v[:x] + @x, :y => v[:y] + @y} }
   end
   
   def segments
@@ -43,7 +40,8 @@ class Polygon
                                        s.b[:x] + @x, s.b[:y] + @y)}
   end
   
-  ##Collision
+  
+  ##COLLISION
   def holds?(point)
      #Vertical ray casting from above
 	y_edges = []
@@ -117,7 +115,8 @@ class Polygon
 	end
   end
   
-  ##Show
+  
+  ##SHOW
   def draw()
     segments.each { |segment| segment.draw() }
   end

@@ -4,10 +4,10 @@ class SceneMenu < Scene
     case @director
 	when :intro_init
 	  @object_pool << IButton.new(:b_newgame,
-	                   Gosu::Image.from_text("New Game", 30),
+	                   Still.new(Gosu::Image.from_text("New Game", 30)),
 	  				   100, 100)
 	  @object_pool << IButton.new(:b_exit, 
-		               Gosu::Image.from_text("Exit", 30),
+		               Still.new(Gosu::Image.from_text("Exit", 30)),
 				       100, 150)
 	when :intro
 	  if (obj(:b_newgame).activated?)

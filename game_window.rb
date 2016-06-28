@@ -1,5 +1,5 @@
 class GameWindow < Gosu::Window
-  attr_accessor :active_keys, :pushed_keys, :released_keys, :scenes
+  attr_accessor :active_keys, :pushed_keys, :released_keys, :scenes, :pacemaker
   
   def initialize(width, height, caption, fullscreen)
     super width, height, :fullscreen => fullscreen
@@ -8,12 +8,14 @@ class GameWindow < Gosu::Window
 	@active_keys = []
 	@pushed_keys = []
 	@released_keys = []
+	@pacemaker = Pacemaker.new()
 	@log = nil
   end
 
   
   #MAIN
   def update()
+    @pacemaker.beat()
     @scenes.each do |scene|
 	  scene.update()
     end
@@ -81,4 +83,13 @@ class GameWindow < Gosu::Window
     return true
   end
 
+  
+  #PACEMAKER
+  def elapsed()
+    @pacemaker.elapsed
+  end
+  
+  def pace=(pace)
+    @pacemaker.pace = pace
+  end
 end

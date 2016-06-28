@@ -2,19 +2,27 @@ class Vector
   include Constants
   
   ##Constructor
-  attr_accessor :x, :y, :c
-  def initialize(args, c = GREEN)
-    if args[:x] && args[:y]
-	  @x = args[:x]
-	  @y = args[:y]
-	elsif args[:angle] && args[:norm]
-	  @x = Gosu::offset_x(args[:angle], args[:norm])
-	  @y = Gosu::offset_y(args[:angle], args[:norm])
+  attr_accessor :x, :y
+  def initialize(*args)
+    if args.size == 1
+	  hsh = args[0]
+      if hsh[:x] && hsh[:y]
+	    @x = hsh[:x]
+	    @y = hsh[:y]
+	  elsif hsh[:angle] && hsh[:norm]
+	    @x = Gosu::offset_x(hsh[:angle], hsh[:norm])
+	    @y = Gosu::offset_y(hsh[:angle], hsh[:norm])
+	  else
+	    raise "Invalid hash initialization of Vector"
+	  end
+	elsif args.size() == 2
+	  @x, @y = *args
+	  unless @x && @y && @x.is_a?(Numeric) && @y.is_a?(Numeric)
+	    raise "Invalid direct initialization of Vector." 
+	  end
 	else
-	  @x, @y = args
-	  raise "Invalid initialization of Vector." if !@x || !@y
+	  raise "Unknown type to initialization of Vector"
 	end
-	@c = c
   end
   
   #Accessors
@@ -86,9 +94,9 @@ class Vector
   ##Show
   def draw(center)
     if center.is_a?(Vector)
-	  Gosu.draw_line(center.x, center.y, c, center.x + @x, center.y + @y, c, 100)
+	  Gosu.draw_line(center.x, center.y, GREEN, center.x + @x, center.y + @y, GREEN, 100)
 	elsif center.is_a?(Hash)
-	  Gosu.draw_line(center[:x], center[:y], c, center[:x] + @x, center[:y] + @y, c, 100)
+	  Gosu.draw_line(center[:x], center[:y], GREEN, center[:x] + @x, center[:y] + @y, GREEN, 100)
 	else
 	  raise "Invalid type of center for vector drawing"
 	end
