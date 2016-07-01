@@ -11,7 +11,7 @@ class SceneMenu < Scene
 				       100, 150)
 	when :intro
 	  if (obj(:b_newgame).activated?)
-		$window.add_scene(ScenePlaytest.new())
+		$window.add_scene(WorldPlaytest.new())
 		$window.remove_scene(self)
 	  end
 	  if (obj(:b_exit).activated?)
