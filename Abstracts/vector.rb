@@ -1,8 +1,8 @@
 class Vector
   include Constants
+  attr_accessor :x, :y
   
   ##Constructor
-  attr_accessor :x, :y
   def initialize(*args)
     if args.size == 1
 	  hsh = args[0]
@@ -76,11 +76,15 @@ class Vector
   end
   
   def /(scalar)
-    return self * (1/scalar)
+    return (self * (1.0/scalar))
   end
   
   def angle_diff(vector)
-    Gosu::angle_diff(@x, @y, vector.x, vector.y)
+    Gosu::angle_diff(angle, vector.angle)
+  end
+
+  def angle_dist(vector)
+    angle_diff(vector).abs
   end
   
   def distance(vector)
@@ -91,14 +95,27 @@ class Vector
     return self / norm()
   end
   
-  ##Show
-  def draw(center)
-    if center.is_a?(Vector)
-	  Gosu.draw_line(center.x, center.y, GREEN, center.x + @x, center.y + @y, GREEN, 100)
-	elsif center.is_a?(Hash)
-	  Gosu.draw_line(center[:x], center[:y], GREEN, center[:x] + @x, center[:y] + @y, GREEN, 100)
-	else
-	  raise "Invalid type of center for vector drawing"
-	end
+  def reset()
+    @x = 0
+	@y = 0
+  end
+  
+  def zero?()
+    return @x == 0 && @y == 0
+  end
+  
+  def copy(vector)
+    @x = vector.x
+	@y = vector.y
+  end
+  
+  def trim(scalar)
+    self.norm = scalar if norm > scalar
+  end
+  
+  
+  ##SHOW
+  def draw(x, y)
+	Gosu.draw_line(x, y, GREEN, x + @x, y + @y, GREEN, 100)
   end
 end

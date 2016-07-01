@@ -22,6 +22,11 @@ class Circle
 	@y += y
   end
   
+  def apply(vector)
+    @x += vector.x
+	@y += vector.y
+  end
+  
   
   ##COLLISION
   def holds?(point)

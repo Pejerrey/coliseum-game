@@ -1,8 +1,8 @@
-class PlayerController
+class Controller
   ##Initialization
   attr_accessor :up, :down, :left, :right, :a, :b, :c
-  attr_accessor :active_keys, :last_input, :move_input_order_h, :move_input_order_v
-  attr_accessor :combos, :mode, :comboTimer
+  attr_accessor :active_keys, :pushed, :released, :command_list
+  attr_accessor :mode
   
   def initialize(up, down, left, right, a, b, c)
     @up = up
@@ -16,29 +16,24 @@ class PlayerController
 	@active_keys = []
 	@pushed = []
 	@released = []
-	
-	@last_input = [] #Link Input + New Input   #Input in the last cycle
-	@combos = []	
-	@move_input_order_h = []
-	@move_input_order_v = []
+	@command_list = []
 	
 	@mode = 1 #0.Deactivated 1.Game
-	@comboTimer = Timer.new()
   end
   
   
-  
-  ##Public Methods
+  ##Loop
   def update()
-    upload()
-  end
-  
-  def upload()
+    #Upload
     @active_keys = $window.active_keys & controlKeys
 	@pushed = $window.pushed_keys & controlKeys
 	@released = $window.released_keys & controlKeys
+	@command_list << @pushed unless @pushed.empty?
+	@command_list.shift if @command_list.size > 10
   end
   
+  
+  ##Accessors
   def up?
     @active_keys.include?(@up)
   end
@@ -64,13 +59,12 @@ class PlayerController
   end
   
   def c?
-    @active_keys.include?(@b)
+    @active_keys.include?(@c)
   end
   
   
-  ##Private Methods
+  ##Auxiliars
   private
-  
   def controlKeys()
     [@down, @up, @left, @right, @a, @b, @c]
   end

@@ -1,6 +1,6 @@
 class Pacemaker
   #Constants
-  LAG_THRESHOLD = 10 #FPS
+  LAG_THRESHOLD = 100 #elapsed
   
   attr_accessor :pace
   def initialize(pace = 1)
@@ -15,7 +15,7 @@ class Pacemaker
   ##Loop
   def beat()
     interval = now() - (@before || 0)
-	if Gosu::fps <= LAG_THRESHOLD
+	if interval > 100
 	  @elapsed = 0 #Lag Freeze
 	else
 	  @elapsed = interval / 1000.0

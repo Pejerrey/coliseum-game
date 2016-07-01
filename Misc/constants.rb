@@ -1,4 +1,10 @@
 module Constants
+  #Physics
+  FRICTION = 600
+  
+  #Math
+  EPSILON = 1e-02
+
   #Colors
   WHITE = Gosu::Color::WHITE
   BLACK = Gosu::Color::BLACK
