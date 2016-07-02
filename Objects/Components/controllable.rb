@@ -1,5 +1,14 @@
 module Controllable
   #Needs: controller
+  def control(pool)
+    #This should actually be implemented in the class itself
+	#I hope I'm not fucking everything up with this declaration
+	#Ideally, it'll prevent "Controllable" classes from crashing
+	#without a "control" method (Maybe they're meant to be
+	#controlled in the main loop), but it'll still allow itself to
+	#be overriden by classes who actually have inner control.
+  end
+  
   def control_update()
     controller.update()
   end

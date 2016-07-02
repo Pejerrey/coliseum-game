@@ -11,7 +11,7 @@ module Physical
   
   private
   ##Internal Behaviour
-  def friction()
+  def friction(delta)
 	unless velocity.zero?
 	  prev_angle = velocity.angle
 	  velocity.norm -= (FRICTION * delta)
@@ -19,13 +19,7 @@ module Physical
     end
   end
   
-  def move()
+  def move(delta)
     body.apply(velocity * delta)
-  end
-  
-  
-  ##Auxiliars
-  def delta()
-    $window.elapsed()
   end
 end

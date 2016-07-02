@@ -4,17 +4,14 @@ class Entity
   include Physical #physics
   
   attr_accessor :tag, :body, :velocity
-  def initialize(tag, body)
+  def initialize(tag, body, velocity = Vector.new(0, 0))
     @tag = tag
 	@body = body
-	@velocity = Vector.new(0, 0)
+	@velocity = velocity
   end
   
-  def update()
-    friction()
-  end
-  
-  def post_update()
-    move()
+  def update(delta = $window.elapsed())
+    friction(delta)
+	move(delta)
   end
 end

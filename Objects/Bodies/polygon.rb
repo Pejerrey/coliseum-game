@@ -3,7 +3,7 @@ class Polygon
   attr_accessor :x, :y, :zero_vertex, :c
   
   ##CONSTRUCTOR
-  def initialize(args)
+  def initialize(*args)
     @x = args.shift
 	@y = args.shift
 	raise "Couldn't initialize x and y on Polygon" unless @y
@@ -52,6 +52,13 @@ class Polygon
   def apply(vector)
     @x += vector.x
 	@y += vector.y
+  end
+  
+  def scale(scalar)
+    @zero_vertex.each do |point|
+	  point[:x] *= scalar
+	  point[:y] *= scalar
+	end
   end
   
   

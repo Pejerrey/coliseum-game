@@ -31,6 +31,10 @@ module Corporeal
     body.apply(vector)
   end
   
+  def scale(scalar)
+    body.scale(scalar)
+  end
+  
   def collides?(entity)
     body.collides?(entity.body)
   end

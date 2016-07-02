@@ -1,11 +1,5 @@
 class TestPlayer < Player
-  include Constants
-  
-  def initialize(tag, body)
-    super(tag, body, Controller.new(W, S, A, D, G, H, J))
-  end
-  
-  def control()
+  def control(pool)
     control_update()
 	#Movement
 	f_input = Vector.new(0, 0)

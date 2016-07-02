@@ -5,23 +5,15 @@ class Player
   include Controllable #key_pressed?
   
   attr_accessor :tag, :body, :velocity, :controller
-  def initialize(tag, body, controller)
+  def initialize(tag, body, controller, velocity = Vector.new(0, 0))
     @tag = tag
 	@body = body
-	@velocity = Vector.new(0, 0)
+	@velocity = velocity
 	@controller = controller
   end
   
-  def update()
-    control()
-	friction()
-  end
-  
-  def post_update()
-    move()
-  end
-  
-  def control()
-    #Internal Control
+  def update(delta = $window.elapsed())
+	friction(delta)
+	move(delta)
   end
 end

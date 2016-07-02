@@ -27,6 +27,10 @@ class Circle
 	@y += vector.y
   end
   
+  def scale(scalar)
+    @radius *= scalar
+  end
+  
   
   ##COLLISION
   def holds?(point)
