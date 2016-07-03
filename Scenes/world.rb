@@ -1,43 +1,14 @@
 class World < Scene
-  COLLISION_PRECISION = 4
+  COLLISION_PRECISION = 1
   RESOLVE_TRIES = 10
   
   ##Loop
   def update()
     init() if new_director?()
-	
 	entity_pool = @object_pool.select{ |o| o.class.included_modules.include?(Physical) }
 	normal_pool = @object_pool - entity_pool
 	update_list(normal_pool)
-	
-	#Initialize
-	try_pool = entity_pool.map { |e| Entity.new(e.tag, e.body.dup, e.velocity.dup) }
-	time_left = $window.elapsed
-	tries = 0
-	#Prob the first step
-	update_list(try_pool, time_left)
-	while collision?(try_pool) &&
-	      tries <= RESOLVE_TRIES
-	  #Find an approximate time of collision
-	  time_prior = time_collision_aprox(entity_pool, time_left)
-	  time_left -= time_prior
-	  #Update movement prior the collision
-	  update_list(entity_pool, time_prior)
-	  raise "Collision when it shouldn't after time aprox" if collision?(entity_pool)
-	  #Exchange of forces (Pritty hard)
-	  entity_pool.each do |e|
-	    e.velocity.x = 0
-		e.velocity.y = 0
-	  end
-	  #Prob the next step
-	  copy_entity_list(entity_pool, try_pool)
-	  update_list(try_pool, time_left)
-	  tries += 1
-	end
-    #If a try_pool succeds an update without collision, entity_pool is
-	#updated regularly for the remaining time
-	update_list(entity_pool, time_left)
-	
+	update_entities(entity_pool)
 	inner_control()
   end
   
@@ -53,6 +24,48 @@ class World < Scene
 	  end
 	end
 	return false
+  end
+  
+  def update_entities(entity_pool)
+  #Initialize
+	try_pool = entity_pool.map { |e| Entity.new(e.tag, e.body.dup, e.velocity.dup) }
+	##################################DIRECTIONDUP
+	time_left = $window.elapsed
+	tries = 0
+	#Prob the first step
+	update_list(try_pool, time_left)
+	while collision?(try_pool) &&
+	      tries <= RESOLVE_TRIES
+	  #Find an approximate time of collision
+	  time_prior = time_collision_aprox(entity_pool, time_left)
+	  time_left -= time_prior
+	  #Update movement prior the collision
+	  update_list(entity_pool, time_prior)
+	  raise "Collision when it shouldn't after time aprox" if collision?(entity_pool)
+	  #Exchange of forces (Pritty hard)
+	  force_exchange(entity_pool, try_pool)
+	  #Prob the next step
+	  copy_entity_list(entity_pool, try_pool)
+	  update_list(try_pool, time_left)
+	  tries += 1
+	end
+    #If a try_pool succeds an update without collision, entity_pool is
+	#updated regularly for the remaining time
+	update_list(entity_pool, time_left)
+  end
+  
+  #Supposes normal
+  def force_exchange(entity_pool, try_pool)
+	(0...(entity_pool.length-1)).each do |i|
+	  (i+1...entity_pool.length).each do |j|
+	    if try_pool[i].collides?(try_pool[j])
+		  entity_pool[i].velocity.x = 0
+		  entity_pool[i].velocity.y = 0
+		  entity_pool[j].velocity.x = 0
+		  entity_pool[j].velocity.y = 0
+		end
+	  end
+	end
   end
   
   def time_collision_aprox(entity_pool, time_left) #Right open search
