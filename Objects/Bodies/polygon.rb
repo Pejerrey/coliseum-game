@@ -124,7 +124,10 @@ class Polygon
   end
   
   def collides?(body)
-    if body.is_a?(Polygon)
+	if body.is_a?(InverseCircle)
+	  inverse_circle = body
+	  return inverse_circle.collides?(self)
+    elsif body.is_a?(Polygon)
 	  polygon = body
 	  return segments.any? { |seg| polygon.intersects?(seg) } ||
 	         polygon.segments.any? { |seg| intersects?(seg) }

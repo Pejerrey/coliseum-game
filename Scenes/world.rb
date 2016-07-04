@@ -9,7 +9,7 @@ class World < Scene
 	normal_pool = @object_pool - entity_pool
 	update_list(normal_pool)
 	update_entities(entity_pool)
-	inner_control()
+	inner_control(entity_pool)
   end
   
   
@@ -88,9 +88,9 @@ class World < Scene
   ##Auxiliars
   def update_list(list, delta = nil)
     if delta
-	  list.each { |e| e.update(delta) }
+	  list.each { |e| e.update(delta) if e.respond_to?(:update) }
 	else
-	  list.each { |e| e.update() }
+	  list.each { |e| e.update() if e.respond_to?(:update) }
 	end
   end
   
@@ -105,9 +105,9 @@ class World < Scene
     end
   end
   
-  def inner_control()
+  def inner_control(entity_pool)
     @object_pool.each do |object| #World Triggers from Inner Object Behaviour
-	  object.control(@object_pool) if object.class.included_modules.include?(Controllable)
+	  object.control(entity_pool) if object.class.included_modules.include?(Controllable)
 	end
   end
 end

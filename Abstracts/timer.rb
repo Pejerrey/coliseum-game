@@ -2,7 +2,7 @@ class Timer
   attr_accessor :tag
   
   ##Constructor
-  def initialize(tag)
+  def initialize(tag = :t)
     @tag = tag
     @start_point = -1
 	@end_point = -1
@@ -24,8 +24,7 @@ class Timer
   end
   
   def elapsed()
-    raise "timer.rb -> call to elapsed() with clock stopped" if @start_point == -1
-    now() - @start_point
+    @start_point == -1 ? -1 : now() - @start_point
   end
   
   def done?()

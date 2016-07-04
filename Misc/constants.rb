@@ -3,6 +3,7 @@ module Constants
   FRICTION = 600
   
   #Math
+  INF = Float::INFINITY
   EPSILON = 1e-02
 
   #Colors

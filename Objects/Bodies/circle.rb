@@ -54,9 +54,12 @@ class Circle
   end
   
   def collides?(body)
-    if body.is_a?(Circle)
+    if body.is_a?(InverseCircle)
+	  inverse_circle = body
+	  return inverse_circle.collides?(self)
+	elsif body.is_a?(Circle)
 	  circle = body
-	  return distance(x, y, body.x, body.y) <= @radius + circle.radius
+	  return Gosu::distance(x, y, circle.x, circle.y) <= @radius + circle.radius
 	elsif body.is_a?(Polygon)
 	  polygon = body
 	  return polygon.holds?({ :x => @x, :y => @y }) ||

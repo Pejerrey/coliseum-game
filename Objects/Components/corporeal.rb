@@ -35,6 +35,14 @@ module Corporeal
     body.scale(scalar)
   end
   
+  def holds?(point)
+    body.holds?(point)
+  end
+  
+  def intersects?(segment)
+    body.intersects?(segment)
+  end
+  
   def collides?(entity)
     body.collides?(entity.body)
   end
