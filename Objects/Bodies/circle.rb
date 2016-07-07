@@ -22,6 +22,10 @@ class Circle
 	@y += y
   end
   
+  def rotate_to()
+    #ANNNNNNNNNNNNNGLEEEE
+  end
+  
   def apply(vector)
     @x += vector.x
 	@y += vector.y

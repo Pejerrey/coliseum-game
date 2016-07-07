@@ -14,6 +14,7 @@ class Polygon
 	  @zero_vertex << { :x => vx, :y => vy}
 	end
 	raise "Less than three vertex provided" if @zero_vertex.size < 3
+	@direction = Vector.new(0, -1)
 	@c = args.empty? ? YELLOW : args.shift
   end
   
