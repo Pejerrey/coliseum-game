@@ -1,6 +1,6 @@
-require 'gosu'
-
 module Utils
+  include Constants
+  
   #Math Section
   def self.in_between?(c, a, b)
     return (c <= a && b <= c) || (c <= b && a <= c)

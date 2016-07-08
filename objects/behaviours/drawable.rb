@@ -1,11 +1,5 @@
 module Drawable
-  #Needs: body, image
-
-  ##Public Behaviour
-  def draw()
-    image.draw(body.x, body.y)
-  end
-  
+  #Accessors
   def i_width() 
     return image.width()
   end
@@ -16,5 +10,10 @@ module Drawable
   
   def i_bounds(x, y)
     return Rectangle.new(x, y, i_width, i_height)
+  end
+
+  #Loop
+  def draw()
+    image.draw(body.x, body.y)
   end
 end

@@ -1,8 +1,7 @@
 module Clickable
-  #Needs: body
   include Constants
   
-  #Object Behaviour
+  #Accessors
   def activated?()
     if @activated
 	  @activated = false
@@ -12,7 +11,7 @@ module Clickable
 	end
   end
   
-  #Auxiliar State
+  #Auxiliars
   private
   def check_activation()
     if @pushing

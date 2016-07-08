@@ -49,17 +49,15 @@ class Circle
   
   def intersects?(segment)
     ax, ay, bx, by = segment
-    #Initialize points as vectors and calculate from a
 	ab = Vector.new(bx - ax, by - ay)
     ac = Vector.new(@x - ax, @y - ay)
-	#Get the scalar proyection from ac to ab
-	s = (ab * ac) / ab.norm()
+	s = (ab * ac) / ab.norm()   #scalar proyection
 	if s < 0
 	  closest = Vector.new(0, 0)
 	elsif s > ab.norm()
 	  closest = ab
 	else
-	  closest = ab.unit_vector() * s #Proyection
+	  closest = ab.unit_vector() * s
 	end
 	return ac.distance(closest) <= @radius
   end
@@ -86,15 +84,12 @@ class Circle
 	stp = @radius/15.0
 	[-1,1].each do |sign|
 	  (-@radius...@radius).step(stp) do |x|
-	    a = { :x => x, :y => sign * Math.sqrt(@radius**2 - x**2) }
-	    b = { :x => x + stp, :y => sign * Math.sqrt(@radius**2 - ((x + stp).round)**2) }
-	    a[:x] += @x
-	    a[:y] += @y
-	    b[:x] += @x
-	    b[:y] += @y
-	    Gosu::draw_line(a[:x], a[:y], @c, b[:x], b[:y], @c, 100)
+	    ax = @x + x
+		ay = @y + sign * Math.sqrt(@radius**2 - x**2)
+		bx = @x + x + stp
+		by = @y + sign * Math.sqrt(@radius**2 - ((x + stp).round)**2)
+	    Gosu::draw_line(ax, ay, @c, bx, by, @c, 100)
 	  end
 	end
-	(direction*20).draw(@x, @y, FUCHSIA)
   end
 end

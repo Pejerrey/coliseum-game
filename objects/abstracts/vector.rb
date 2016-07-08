@@ -1,5 +1,6 @@
 class Vector
   include Constants
+  
   attr_accessor :x, :y
   
   ##Constructor

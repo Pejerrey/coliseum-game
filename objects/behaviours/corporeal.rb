@@ -1,7 +1,7 @@
 module Corporeal
   include Constants
   
-  #Accessors
+  ##Accessors
   def x()
     body.x
   end
@@ -26,7 +26,8 @@ module Corporeal
     body.direction = dir.dup()
   end
   
-  #Transformation
+  
+  ##Transformation
   def move_to(x, y)
     body.move_to(x, y)
   end
@@ -51,7 +52,8 @@ module Corporeal
     body.scale(scalar)
   end
   
-  #Collision
+  
+  ##Collision
   def holds?(px, py)
     body.holds?(px, py)
   end

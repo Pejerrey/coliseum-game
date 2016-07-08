@@ -48,6 +48,10 @@ class Controller
     @active_keys.include?(@c)
   end
   
+  def last_input?(key)
+    return @command_list.size > 0 && @command_list.last.include?(key)
+  end
+  
   
   ##Loop
   def update()
