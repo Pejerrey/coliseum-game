@@ -1,9 +1,8 @@
 class Controller
-  ##Initialization
   attr_accessor :up, :down, :left, :right, :a, :b, :c
-  attr_accessor :active_keys, :pushed, :released, :command_list
-  attr_accessor :mode
+  attr_accessor :active_keys, :pushed_keys, :released_keys, :command_list
   
+  ##Constructor
   def initialize(up, down, left, right, a, b, c)
     @up = up
 	@down = down
@@ -14,22 +13,9 @@ class Controller
 	@c = c
 	
 	@active_keys = []
-	@pushed = []
-	@released = []
+	@pushed_keys = []
+	@released_keys = []
 	@command_list = []
-	
-	@mode = 1 #0.Deactivated 1.Game
-  end
-  
-  
-  ##Loop
-  def update()
-    #Upload
-    @active_keys = $window.active_keys & controlKeys
-	@pushed = $window.pushed_keys & controlKeys
-	@released = $window.released_keys & controlKeys
-	@command_list << @pushed unless @pushed.empty?
-	@command_list.shift if @command_list.size > 10
   end
   
   
@@ -60,6 +46,16 @@ class Controller
   
   def c?
     @active_keys.include?(@c)
+  end
+  
+  
+  ##Loop
+  def update()
+    @active_keys = $window.active_keys & controlKeys
+	@pushed_keys = $window.pushed_keys & controlKeys
+	@released_keys = $window.released_keys & controlKeys
+	@command_list << @pushed_keys unless @pushed_keys.empty?
+	@command_list.shift while @command_list.size > 10
   end
   
   

@@ -1,8 +1,9 @@
 class Circle
   include Constants
+  
   attr_accessor :x, :y, :direction, :radius, :c
   
-  ##CONSTRUCTOR  
+  ##Constructor
   def initialize(x, y, radius, c = YELLOW)
     @x = x
 	@y = y
@@ -12,19 +13,19 @@ class Circle
   end
   
   
-  ##TRANSFORMATION
+  ##Transformation
   def move_to(x, y)
     @x = x
 	@y = y
   end
   
+  def rotate_to(ang)
+    @direction.angle = ang
+  end
+  
   def advance(x, y)
     @x += x
 	@y += y
-  end
-  
-  def rotate_to(ang)
-    @direction.angle = ang
   end
   
   def turn(ang)
@@ -41,7 +42,7 @@ class Circle
   end
   
   
-  ##COLLISION
+  ##Collision
   def holds?(point)
     return Gosu::distance(point[:x], point[:y], @x, @y) <= @radius
   end
@@ -79,7 +80,7 @@ class Circle
   end
   
   
-  ##SHOW
+  ##Loop
   def draw()
 	stp = @radius/15.0
 	[-1,1].each do |sign|

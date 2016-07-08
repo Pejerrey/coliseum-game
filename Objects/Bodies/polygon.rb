@@ -3,19 +3,13 @@ class Polygon
   attr_accessor :x, :y, :direction, :zero_vertex, :c
   
   ##CONSTRUCTOR
-  def initialize(*args)
-    @x = args.shift
-	@y = args.shift
-	raise "Couldn't initialize x and y on Polygon" unless @y
+  def initialize(x, y, zero_vertex, c = RED)
+    @x = x
+	@y = y
 	@direction = Vector.new(0, -1)
-    @zero_vertex = []
-	until args.size <= 1
-	  vx = args.shift
-	  vy = args.shift
-	  @zero_vertex << { :x => vx, :y => vy}
-	end
+	@zero_vertex = zero_vertex
+	@c = c
 	raise "Less than three vertex provided" if @zero_vertex.size < 3
-	@c = args.empty? ? RED : args.shift
   end
   
   
@@ -23,7 +17,7 @@ class Polygon
   def vertex
     real_vertex = []
 	@zero_vertex.each do |v|
-	  temp = Vector.new(v[:x], v[:y])
+	  temp = v.dup()
 	  temp.angle += @direction.angle
 	  real_vertex << { :x => temp.x + @x, :y => temp.y + @y }
 	end
@@ -63,8 +57,8 @@ class Polygon
   
   def scale(scalar)
     @zero_vertex.each do |point|
-	  point[:x] *= scalar
-	  point[:y] *= scalar
+	  point.x *= scalar
+	  point.y *= scalar
 	end
   end
   

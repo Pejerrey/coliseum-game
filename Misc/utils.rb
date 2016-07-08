@@ -46,7 +46,7 @@ module Utils
     (a >= 0 && b >=0) || (a < 0 && b < 0) 
   end
   
-  def max(*args)
+  def self.max(*args)
     max = args[0]
 	args.each do |a|
 	  if a > max then max = a end
@@ -67,6 +67,16 @@ module Utils
 	return false unless p.y < r.bottom
 	return false unless p.y > r.top
 	return true
+  end
+  
+  def self.vectorize(*args)
+    arr = []
+	until args.empty?
+	  x = args.shift
+	  y = args.shift
+	  arr << Vector.new(x, y)
+	end
+	return arr
   end
   
   

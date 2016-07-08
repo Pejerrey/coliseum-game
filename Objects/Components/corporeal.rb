@@ -1,8 +1,7 @@
 module Corporeal
-  #Needs body
   include Constants
   
-  ##Behaviour
+  #Accessors
   def x()
     body.x
   end
@@ -24,15 +23,24 @@ module Corporeal
   end
   
   def direction=(dir)
-    body.direction = dir
+    body.direction = dir.dup()
   end
   
+  #Transformation
   def move_to(x, y)
     body.move_to(x, y)
+  end
+    
+  def rotate_to(angle)
+    body.rotate_to(angle)
   end
   
   def advance(x, y)
     body.advance(x, y)
+  end
+  
+  def turn(angle)
+    body.turn(angle)
   end
   
   def apply(vector)
@@ -43,6 +51,7 @@ module Corporeal
     body.scale(scalar)
   end
   
+  #Collision
   def holds?(point)
     body.holds?(point)
   end
