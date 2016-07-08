@@ -1,12 +1,13 @@
 class Polygon
   include Constants
-  attr_accessor :x, :y, :zero_vertex, :c
+  attr_accessor :x, :y, :direction, :zero_vertex, :c
   
   ##CONSTRUCTOR
   def initialize(*args)
     @x = args.shift
 	@y = args.shift
 	raise "Couldn't initialize x and y on Polygon" unless @y
+	@direction = Vector.new(0, -1)
     @zero_vertex = []
 	until args.size <= 1
 	  vx = args.shift
@@ -14,28 +15,33 @@ class Polygon
 	  @zero_vertex << { :x => vx, :y => vy}
 	end
 	raise "Less than three vertex provided" if @zero_vertex.size < 3
-	@direction = Vector.new(0, -1)
-	@c = args.empty? ? YELLOW : args.shift
+	@c = args.empty? ? RED : args.shift
   end
   
   
   ##ACCESSORS
   def vertex
-    @zero_vertex.map{ |v| { :x => v[:x] + @x, :y => v[:y] + @y} }
+    real_vertex = []
+	@zero_vertex.each do |v|
+	  temp = Vector.new(v[:x], v[:y])
+	  temp.angle += @direction.angle
+	  real_vertex << { :x => temp.x + @x, :y => temp.y + @y }
+	end
+	return real_vertex
   end
   
   def segments
-    arr = []
-    (0...vertex.size-1).each do |i|
-	  a = @zero_vertex[i]
-	  b = @zero_vertex[i+1]
-	  arr << Segment.new(a[:x], a[:y], b[:x], b[:y], @c)
+    real_vertex = vertex()
+    segments = []
+    (0...real_vertex.size-1).each do |i|
+	  a = real_vertex[i]
+	  b = real_vertex[i+1]
+	  segments << Segment.new(a[:x], a[:y], b[:x], b[:y], @c)
 	end
-    a = @zero_vertex.last
-	b = @zero_vertex.first
-	arr << Segment.new(a[:x], a[:y], b[:x], b[:y], @c)
-    return arr.map{ |s| Segment.new(s.a[:x] + @x, s.a[:y] + @y,
-                                    s.b[:x] + @x, s.b[:y] + @y)}
+    a = real_vertex.last
+	b = real_vertex.first
+	segments << Segment.new(a[:x], a[:y], b[:x], b[:y], @c)
+    return segments
   end
   
   
@@ -144,5 +150,6 @@ class Polygon
   ##SHOW
   def draw()
     segments.each { |segment| segment.draw() }
+	(direction*20).draw(@x, @y, FUCHSIA)
   end
 end

@@ -19,6 +19,14 @@ module Corporeal
     body.y = y
   end
   
+  def direction()
+    body.direction
+  end
+  
+  def direction=(dir)
+    body.direction = dir
+  end
+  
   def move_to(x, y)
     body.move_to(x, y)
   end

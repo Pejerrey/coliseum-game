@@ -15,6 +15,8 @@ class TestPlayer < Player
 	  f_input.y += 20 if down? && (!last_input?(up) || !up?)
 	  apply_force(f_input)
 	  velocity.trim(150)
+	  #rotation
+	  direction.angle = velocity.angle unless velocity.zero?
 	else
 	  #Events
 	  case @status
@@ -28,10 +30,18 @@ class TestPlayer < Player
     case @timer.elapsed()
 	when -1
 	  @timer.start()
-	  @event = Rectangle.new(x + 50, y, 40, 40)
+	  event_dist = Vector.new(0, 0)
+	  event_dist.norm = 50
+	  event_dist.angle = direction.angle
+	  @event = Rectangle.new(x + event_dist.x, y + event_dist.y, 40, 40)
+	  @event.direction.angle = direction.angle
 	when 0...600
 	  if @event
-	    @event.move_to(x + 50, y)
+	    event_dist = Vector.new(0, 0)
+		event_dist.norm = 50
+		event_dist.angle = direction.angle
+	    @event.move_to(x + event_dist.x, y + event_dist.y)
+		@event.direction.angle = direction.angle
 	    pool.each do |ent|
 	      next if ent == self
 		  if @event.collides?(ent.body)

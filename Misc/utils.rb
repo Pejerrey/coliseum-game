@@ -71,11 +71,6 @@ module Utils
   
   
   #Media Section
-  def self.get_media(file)
-    File.join(File.dirname(File.dirname(File.dirname(
-	  File.expand_path(__FILE__)))), 'media', file)
-  end
-  
   def self.get_image(file)
     Gosu::Image.new(get_media(file), :tileable => true)
   end

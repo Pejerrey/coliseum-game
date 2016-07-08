@@ -1,11 +1,12 @@
 class Circle
   include Constants
-  attr_accessor :x, :y, :radius, :c
+  attr_accessor :x, :y, :direction, :radius, :c
   
   ##CONSTRUCTOR  
   def initialize(x, y, radius, c = YELLOW)
     @x = x
 	@y = y
+	@direction = Vector.new(0, -1)
 	@radius = radius
 	@c = c
   end
@@ -22,8 +23,12 @@ class Circle
 	@y += y
   end
   
-  def rotate_to()
-    #ANNNNNNNNNNNNNGLEEEE
+  def rotate_to(ang)
+    @direction.angle = ang
+  end
+  
+  def turn(ang)
+    @direction.angle += ang
   end
   
   def apply(vector)
@@ -88,5 +93,6 @@ class Circle
 	    Gosu::draw_line(a[:x], a[:y], @c, b[:x], b[:y], @c, 100)
 	  end
 	end
+	(direction*20).draw(@x, @y, FUCHSIA)
   end
 end

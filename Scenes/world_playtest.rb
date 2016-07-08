@@ -15,16 +15,10 @@ class WorldPlaytest < World
 	                                      350))													  
 	  obj(:p_poly).apply_force(Vector.new(300, 16))
 	  obj(:e_cave).scale(30)
-	  $segment = Segment.new(0, 0, 1, 1)
 	when :intro
-	  puts "HIHI" if obj(:e_field).collides?(obj(:p_poly))
 	  #Things go here 
 	
 	else unknown_director()
 	end
-  end
-  
-  def draw()
-    super()
   end
 end

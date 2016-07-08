@@ -115,7 +115,7 @@ class Vector
   
   
   ##SHOW
-  def draw(x, y)
-	Gosu.draw_line(x, y, GREEN, x + @x, y + @y, GREEN, 100)
+  def draw(x, y, c = GREEN)
+	Gosu.draw_line(x, y, c, x + @x, y + @y, c, 100)
   end
 end

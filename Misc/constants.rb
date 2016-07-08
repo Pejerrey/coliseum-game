@@ -12,6 +12,10 @@ module Constants
   GREEN = Gosu::Color::GREEN
   RED = Gosu::Color::RED
   YELLOW = Gosu::Color::YELLOW
+  FUCHSIA = Gosu::Color::FUCHSIA
+  AQUA = Gosu::Color::AQUA
+  CYAN = Gosu::Color::CYAN
+  GRAY = Gosu::Color::GRAY
   
   #Keys
   UP = Gosu::KbUp

@@ -1,8 +1,9 @@
 class Pacemaker
-  #Constants
-  LAG_THRESHOLD = 100 #elapsed
+  LAG_THRESHOLD = 100
   
   attr_accessor :pace
+  
+  ##Constructor
   def initialize(pace = 1)
     @pace = 1
   end

@@ -4,17 +4,20 @@ class World < Scene
   
   ##Loop
   def update()
-    init() if new_director?()
+    init() if @next_director
 	update_objects()
 	#collision_resolve()
-	inner_control(@object_pool)
+	inner_control()
   end
   
   
   ##Auxiliars
-  def inner_control(entity_pool)
-    @object_pool.each do |object| #World Triggers from Inner Object Behaviour
-	  object.control(entity_pool) if object.class.included_modules.include?(Controllable)
+  private
+  def inner_control()
+    puppet_pool = @object_pool.select{ |o| o.class.included_modules.include?(Controllable) }
+    entity_pool = @object_pool.select{ |o| o.class.included_modules.include?(Physical) }
+    puppet_pool.each do |puppet| #World Triggers from Inner Object Behaviour
+	  puppet.control(entity_pool)
 	end
   end
 end
