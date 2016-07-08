@@ -1,11 +1,11 @@
 class InverseCircle < Circle
   ##COLLISION
-  def holds?(point)
-    return !super(point)
+  def holds?(px, py)
+    return !super(px, py)
   end
   
-  def intersects?(seg)
-    return !super(seg)
+  def intersects?(segment)
+    return !super(segment)
   end
   
   def collides?(body)
@@ -14,11 +14,11 @@ class InverseCircle < Circle
 	  return true
     elsif body.is_a?(Circle)
 	  circle = body
-	  return Gosu::distance(x, y, circle.x, circle.y) + [@radius, circle.radius].min >
+	  return Gosu::distance(@x, @y, circle.x, circle.y) + [@radius, circle.radius].min >
 	         [@radius, circle.radius].max
 	elsif body.is_a?(Polygon)
 	  polygon = body
-	  return polygon.segments.any? { |seg| intersects?(seg) }
+	  return polygon.segments.any? { |segment| intersects?(segment) }
 	else
 	  raise "Body not recognized for collision with circle"
 	end

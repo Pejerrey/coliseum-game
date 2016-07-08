@@ -15,16 +15,15 @@ module Clickable
   #Auxiliar State
   private
   def check_activation()
-    mouse_pos = { :x => $window.mouse_x, :y => $window.mouse_y }
     if @pushing
-	  unless body.holds?(mouse_pos)
+	  unless body.holds?($window.mouse_x, $window.mouse_y)
 	    @pushing = false
 	  end
 	  if $window.released?(MSLEFT)
 	    @activated = true
       end
 	else
-	  if $window.pushed?(MSLEFT) && body.holds?(mouse_pos)
+	  if $window.pushed?(MSLEFT) && body.holds?($window.mouse_x, $window.mouse_y)
 	    @pushing = true
 	  end
 	end

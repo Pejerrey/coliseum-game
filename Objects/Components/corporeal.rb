@@ -52,8 +52,8 @@ module Corporeal
   end
   
   #Collision
-  def holds?(point)
-    body.holds?(point)
+  def holds?(px, py)
+    body.holds?(px, py)
   end
   
   def intersects?(segment)

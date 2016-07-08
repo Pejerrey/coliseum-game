@@ -10,7 +10,7 @@ class WorldPlaytest < World
 	  @object_pool << TestPlayer.new(:p_circ, Circle.new(400, 400, 50),
 	                                 Controller.new(UP, DOWN, LEFT, RIGHT, N1, N2, N3))
 	  @object_pool << StaticEntity.new(:e_cave, Polygon.new(500, 150,
-	                                      Utils.vectorize(1,0, 2,-2, 2,-3, -2,-3, -4,0, -4,3, -2,0, -1,4, 3,2)))
+	                                      [1,0, 2,-2, 2,-3, -2,-3, -4,0, -4,3, -2,0, -1,4, 3,2]))
 	  @object_pool << StaticEntity.new(:e_field, InverseCircle.new($window.width/2, $window.height/2,
 	                                      350))													  
 	  obj(:p_poly).apply_force(Vector.new(300, 16))

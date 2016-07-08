@@ -43,18 +43,19 @@ class Circle
   
   
   ##Collision
-  def holds?(point)
-    return Gosu::distance(point[:x], point[:y], @x, @y) <= @radius
+  def holds?(px, py)
+    return Gosu::distance(px, py, @x, @y) <= @radius
   end
   
-  def intersects?(seg)
+  def intersects?(segment)
+    ax, ay, bx, by = segment
     #Initialize points as vectors and calculate from a
-	ab = Vector.new(seg.b) - Vector.new(seg.a)
-    ac = Vector.new({ :x => @x, :y => @y}) - Vector.new(seg.a)
+	ab = Vector.new(bx - ax, by - ay)
+    ac = Vector.new(@x - ax, @y - ay)
 	#Get the scalar proyection from ac to ab
 	s = (ab * ac) / ab.norm()
 	if s < 0
-	  closest = Vector.new({ :x => 0, :y => 0 })
+	  closest = Vector.new(0, 0)
 	elsif s > ab.norm()
 	  closest = ab
 	else
@@ -69,11 +70,11 @@ class Circle
 	  return inverse_circle.collides?(self)
 	elsif body.is_a?(Circle)
 	  circle = body
-	  return Gosu::distance(x, y, circle.x, circle.y) <= @radius + circle.radius
+	  return Gosu::distance(@x, @y, circle.x, circle.y) <= @radius + circle.radius
 	elsif body.is_a?(Polygon)
 	  polygon = body
-	  return polygon.holds?({ :x => @x, :y => @y }) ||
-	         polygon.segments.any? { |seg| self.intersects?(seg) }
+	  return polygon.holds?(@x, @y) ||
+	         polygon.segments.any? { |segment| self.intersects?(segment) }
 	else
 	  raise "Body not recognized for collision with circle"
 	end
