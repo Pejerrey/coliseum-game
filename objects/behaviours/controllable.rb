@@ -55,11 +55,30 @@ module Controllable
   def c?
     controller.active_keys.include?(c)
   end
+  
+  def active_keys()
+    controller.active_keys()
+  end
+  
+  def pushed_keys()
+    controller.pushed_keys()
+  end
+  
+  def released_keys()
+    controller.released_keys()
+  end
+  
+  def command_list()
+    controller.command_list()
+  end
     
   def last_input?(key)
     controller.last_input?(key)
   end
   
+  def combo?(*args)
+    controller.combo?(*args)
+  end
   
   ##Loop
   def control(pool)

@@ -10,7 +10,7 @@ class Player
 	@body = body
 	@velocity = velocity
 	@controller = controller
-	@status = :neutral
+	@status = :idling
 	@event = nil
 	@timer = Timer.new()
   end

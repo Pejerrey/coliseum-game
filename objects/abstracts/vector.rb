@@ -29,6 +29,11 @@ class Vector
     @y = Gosu::offset_y(angle, norm)    
   end
   
+  def apply(vector)
+    @x += vector.x
+	@y += vector.y
+  end
+  
   def angle()
     Gosu::angle(0, 0, @x, @y)
   end

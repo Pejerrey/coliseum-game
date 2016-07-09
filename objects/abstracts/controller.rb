@@ -16,6 +16,8 @@ class Controller
 	@pushed_keys = []
 	@released_keys = []
 	@command_list = []
+	
+	@prev_push_time = nil
   end
   
   
@@ -49,17 +51,52 @@ class Controller
   end
   
   def last_input?(key)
-    return @command_list.size > 0 && @command_list.last.include?(key)
+    return @command_list.size > 0 && @command_list.last[:keys].include?(key)
   end
   
+  def combo?(*args)
+    index = @command_list.size - 1
+    args.reverse_each do |x|
+	  return false if index < 0
+	  #puts x         #####
+	  if x.is_a?(Symbol)
+	    #map symbols
+	    key = nil
+		case x
+		when :left then key = left
+		when :right then key = right
+		when :up then key = up
+		when :down then key = down
+		end
+		#check key
+		return false unless @command_list[index][:keys].include?(key)
+		if index == @command_list.size - 1
+		  return false unless @active_keys.include?(key)
+		end
+	  elsif x.is_a?(Numeric)
+	    #check time
+		return false unless @command_list[index][:time] < x
+		#next block
+		index -= 1
+	  else
+	    raise "x es cualca"
+	  end
+	end
+	#puts ""  #############
+	return true
+  end
   
   ##Loop
   def update()
     @active_keys = $window.active_keys & controlKeys
 	@pushed_keys = $window.pushed_keys & controlKeys
 	@released_keys = $window.released_keys & controlKeys
-	@command_list << @pushed_keys unless @pushed_keys.empty?
-	@command_list.shift while @command_list.size > 10
+	unless @pushed_keys.empty?
+	  @command_list << { :time => now() - (@prev_push_time || 0),
+	                     :keys => @pushed_keys }
+	  @prev_push_time = now()
+	  @command_list.shift() while @command_list.size > 10
+	end
   end
   
   
@@ -67,5 +104,9 @@ class Controller
   private
   def controlKeys()
     [@down, @up, @left, @right, @a, @b, @c]
+  end
+  
+  def now()
+    Gosu.milliseconds() || 0
   end
 end
