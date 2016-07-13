@@ -9,8 +9,7 @@ class TestPlayer < Player
 	when :running then run(pool)
 	when :attacking then attack(pool)
 	when :stepping then step(pool)
-	else
-	  raise "Unknown status #{@status}"
+	else raise "Unknown status #{@status}"
 	end
   end
   
@@ -25,85 +24,88 @@ class TestPlayer < Player
 						  combo?(:up, 200, :up) ||
 						  combo?(:down, 200, :down)
 	#movement
-	f_move = Vector.new(0, 0)
-	f_move.x -= 20 if left? && (!last_input?(right) || !right?)
-	f_move.x += 20 if right? && (!last_input?(left) || !left?)
-    f_move.y -= 20 if up? && (!last_input?(down) || !down?)
-	f_move.y += 20 if down? && (!last_input?(up) || !up?)
-	f_move.trim(20)
-	velocity.apply(f_move)
-	velocity.trim(100)
+	velocity.apply(movement_direction(1500 * delta))
+	velocity.trim(80)
 	direction.angle = velocity.angle unless velocity.zero?
   end
   
   def run(pool)
     #triggers
+	@status = :stepping if c?
 	@status = :idling if !right? && !left? && !down? && !up?
   	#movement
-	f_move = Vector.new(0, 0)
-	f_move.x -= 30 if left? && (!last_input?(right) || !right?)
-	f_move.x += 30 if right? && (!last_input?(left) || !left?)
-    f_move.y -= 30 if up? && (!last_input?(down) || !down?)
-	f_move.y += 30 if down? && (!last_input?(up) || !up?)
-	f_move.trim(30)
-	velocity.apply(f_move)
-	velocity.trim(200)
+	velocity.apply(movement_direction(1200 * delta))
+	velocity.trim(175)
 	direction.angle = velocity.angle unless velocity.zero?
   end
   
   def attack(pool)
-    case @timer.elapsed()
-	when -1
-	  @timer.start()
-	  event_dist = Vector.new(0, 0)
-	  event_dist.norm = 50
-	  event_dist.angle = direction.angle
-	  @event = Rectangle.new(x + event_dist.x, y + event_dist.y, 40, 40)
-	  @event.direction.angle = direction.angle
-	when 0...600
-	  if @event
-	    event_dist = Vector.new(0, 0)
-		event_dist.norm = 50
-		event_dist.angle = direction.angle
-	    @event.move_to(x + event_dist.x, y + event_dist.y)
-		@event.direction.angle = direction.angle
-	    pool.each do |ent|
-	      next if ent == self
-		  if @event.collides?(ent.body)
-		    ent.velocity.x += 300
-		    @event = nil
+    frame_loop do |frame|
+	  case frame
+	  when 1..2 #start-up
+	  when 3 #active_in
+	    event_dist = direction.with_norm(50)
+	    @event = Rectangle.new(x + event_dist.x, y + event_dist.y, 40, 40)
+	    @event.direction.angle = direction.angle
+	  when 4..15 #active
+	    if @event
+	      event_dist = direction.with_norm(50)
+	      @event.move_to(x + event_dist.x, y + event_dist.y)
+		  @event.rotate_to(direction.angle)
+		  collide(pool) do |entity|
+		    entity.apply_force(direction.with_norm(100))
+			@event = nil
 			break
 		  end
-	    end
+		end
+	  when 16 #active_out
+	    @event = nil
+	  when 17..19 #recovery
+	  when 20 #exit
+	    reset_to(:idling)
+		return
 	  end
-	when 600..INF
-      @status = :idling
-	  @timer.stop()
-	  @event = nil
 	end
   end
   
   def step(pool)
-	#init
-    if @timer.elapsed == -1
-	  @timer.start()
-	  @anchor_x = x
-	  @anchor_y = y
-	else
-	  #triggers
-	  unless c?
-	    @status = :idling 
-	    @timer.stop()
+	frame_loop() do |frame|
+	  case frame
+	  when 1
+	    velocity.reset()
+		
+	  when 2..3
+	    #trigger
+	    unless c?
+		  reset_to(:idling)
+		  return
+		end
+		#hold
+		hold_frame()
+	    case frame
+		when 2
+		  if arrow?
+		    @step_f = movement_direction(200)
+		    apply_force(@step_f)
+		    goto_and_play(10)
+		  end
+		when 3
+		   if !arrow?
+		     apply_force(-@step_f)
+			 goto_and_play(20)
+		   end
+		end
+	  
+	  when 11..17
+	  when 18
+	    velocity.reset()
+	    goto_and_stop(3)
+	  when 21..27
+	  when 28
+	    velocity.reset()
+	    goto_and_stop(2)
 	  end
-	  #step
-	  f_move = Vector.new(0, 0)
-	  f_move.x -= 30 if left? && (!last_input?(right) || !right?)
-	  f_move.x += 30 if right? && (!last_input?(left) || !left?)
-      f_move.y -= 30 if up? && (!last_input?(down) || !down?)
-	  f_move.y += 30 if down? && (!last_input?(up) || !up?)
-	  f_move.trim(30)
-	  self.x = @anchor_x + f_move.x
-	  self.y = @anchor_y + f_move.y
 	end
   end
+		
 end

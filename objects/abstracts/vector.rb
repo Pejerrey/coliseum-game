@@ -49,10 +49,23 @@ class Vector
   def norm=(norm)
     direct_to(angle(), norm)
   end
-    
+  
+  def with_angle(angle)
+    vect = Vector.new(@x, @y)
+	vect.angle = angle
+	return vect
+  end
+  
+  def with_norm(norm)
+    vect = Vector.new(@x, @y)
+	vect.norm = norm
+	return vect
+  end
+  
   def zero?()
     return @x == 0 && @y == 0
   end
+  
   
 
   ##Operators
@@ -91,7 +104,7 @@ class Vector
 	@y = 0
   end
   
-  def copy(vector)
+  def v_copy(vector)
     @x = vector.x
 	@y = vector.y
   end

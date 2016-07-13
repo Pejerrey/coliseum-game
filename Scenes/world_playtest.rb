@@ -5,16 +5,11 @@ class WorldPlaytest < World
     super()
     case @director
 	when :intro_init
-	  @object_pool << TestPlayer.new(:p_poly, Rectangle.new(250, 300, 40, 30),
+	  @object_pool << TestPlayer.new(:p_1, Circle.new(200, $window.height/2, 20),
 	                                 Controller.new(W, S, A, D, G, H, J))
-	  @object_pool << TestPlayer.new(:p_circ, Circle.new(400, 400, 50),
+	  @object_pool << TestPlayer.new(:p_2, Circle.new(400, $window.height/2, 20),
 	                                 Controller.new(UP, DOWN, LEFT, RIGHT, N1, N2, N3))
-	  @object_pool << StaticEntity.new(:e_cave, Polygon.new(500, 150,
-	                                      [1,0, 2,-2, 2,-3, -2,-3, -4,0, -4,3, -2,0, -1,4, 3,2]))
-	  @object_pool << StaticEntity.new(:e_field, InverseCircle.new($window.width/2, $window.height/2,
-	                                      350))													  
-	  obj(:p_poly).apply_force(Vector.new(300, 16))
-	  obj(:e_cave).scale(30)
+	  @object_pool << StaticEntity.new(:e_field, InverseCircle.new($window.width/2, $window.height/2, 350))
 	when :intro
 	  #Things go here 
 	

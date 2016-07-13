@@ -1,5 +1,5 @@
 class Pacemaker
-  LAG_THRESHOLD = 100
+  LAG_THRESHOLD = 67   #ms
   
   attr_accessor :pace
   
@@ -13,12 +13,18 @@ class Pacemaker
     @elapsed * @pace
   end
   
+  def elapsed_ms()
+    @elapsed_ms * @pace
+  end
+  
   ##Loop
   def beat()
     interval = now() - (@before || 0)
-	if interval > 100
+	if interval > LAG_THRESHOLD
+	  @elapsed_ms = 0
 	  @elapsed = 0 #Lag Freeze
 	else
+	  @elapsed_ms = interval
 	  @elapsed = interval / 1000.0
 	end
 	@before = now()

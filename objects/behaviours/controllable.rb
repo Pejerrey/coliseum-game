@@ -44,6 +44,10 @@ module Controllable
     controller.active_keys.include?(right)
   end
   
+  def arrow?
+    up? || left? || right? || down?
+  end
+  
   def a?
     controller.active_keys.include?(a)
   end

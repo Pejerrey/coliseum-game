@@ -33,5 +33,6 @@ end
 
 ##Main loop
 $window = GameWindow.new(WIDTH, HEIGHT, CAPTION, $FULLSCREEN)
+$window.log = Log.new()
 $window.add_scene(SceneIntro.new())
 $window.show() 

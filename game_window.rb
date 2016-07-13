@@ -2,6 +2,7 @@ class GameWindow < Gosu::Window
   attr_accessor :active_keys, :pushed_keys, :released_keys
   attr_accessor :scenes
   attr_accessor :pacemaker
+  attr_accessor :log
   
   ##Constructor
   def initialize(width, height, caption, fullscreen)
@@ -12,6 +13,7 @@ class GameWindow < Gosu::Window
 	@pushed_keys = []
 	@released_keys = []
 	@pacemaker = Pacemaker.new()
+	@log = nil
   end
 
   
@@ -43,6 +45,10 @@ class GameWindow < Gosu::Window
     @pacemaker.elapsed()
   end
   
+  def elapsed_ms()
+    @pacemaker.elapsed_ms()
+  end
+  
   def pace=(pace)
     @pacemaker.pace = pace
   end
@@ -56,14 +62,14 @@ class GameWindow < Gosu::Window
     end
 	@pushed_keys.clear
 	@released_keys.clear
-	# if $DEBUG_MODE
-	  # $window.caption = Gosu::fps
-	  # if Thread.list.size == 1
-	    # Thread.new do
-	      # @log.log()
-	    # end.run
-	  # end
-	# end
+	if $DEBUG_MODE
+	  $window.caption = Gosu::fps
+	  if Thread.list.size == 1
+	    Thread.new do
+	      @log.log()
+	    end.run
+	  end
+	end
   end
 
   def draw()
