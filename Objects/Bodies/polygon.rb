@@ -68,6 +68,13 @@ class Polygon
     @zero_vertex.map!{ |x| x * scalar }
   end
   
+  def in_front_of(body, distance)
+    vector_distance = body.direction.with_norm(distance)
+    @x = body.x + vector_distance.x
+	@y = body.y + vector_distance.y
+	@direction = body.direction
+  end
+  
   
   ##Collision
   def holds?(px, py)

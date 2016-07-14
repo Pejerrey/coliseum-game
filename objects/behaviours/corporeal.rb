@@ -52,6 +52,10 @@ module Corporeal
     body.scale(scalar)
   end
   
+  def in_front_of(entity, distance)
+    body.in_front_of(entity.body, distance)
+  end
+  
   
   ##Collision
   def holds?(px, py)

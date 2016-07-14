@@ -12,6 +12,6 @@ module DebugDrawable
 	#direction
 	(body.direction*20).draw(body.x, body.y, FUCHSIA)
 	#events
-	event.draw() if self.is_a?(Player) && @event
+	event.debug_draw() if self.is_a?(Player) && event
   end
 end

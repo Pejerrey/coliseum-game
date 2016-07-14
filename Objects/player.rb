@@ -6,7 +6,7 @@ class Player
   include Controllable
   
   ##Constructor
-  attr_accessor :tag, :body, :velocity, :controller, :status, :event, :timer, :image
+  attr_accessor :tag, :body, :velocity, :controller, :status, :event, :timer, :image, :current_frame
   def initialize(tag, body, controller, image = nil)
     @tag = tag
 	@body = body
@@ -15,8 +15,6 @@ class Player
 	@status = :idling
 	@event = nil
 	@current_frame = 0
-	@remaining_frames = 0
-	@frame_stop = false
 	@image = image
   end
   
@@ -40,8 +38,16 @@ class Player
 	end
   end
   
-  def delta()
-    $window.elapsed()
+  def frame_loop()
+	elapsed_frames().times do
+	  @current_frame += 1
+	  yield(current_frame)
+	end	
+  end
+  
+  def reset_to(symbol)
+    @status = symbol
+	@current_frame = 0
   end
   
   def movement_direction(norm = 1)
@@ -54,62 +60,7 @@ class Player
 	return force
   end
   
-  def frame_loop()
-    if @frame_stop
-	  yield(@current_frame)
-	else
-	  @remaining_frames = elapsed_frames()
-	  while @remaining_frames > 0
-	    @remaining_frames -= 1
-		@current_frame += 1
-		yield(@current_frame)
-	  end
-	end	
-  end
-  
-  def hold_frame()
-    @remaining_frames = 0
-    @frame_stop = true
-  end
-  
-  def release_frame()
-    @frame_stop = false
-  end
-  
-  def prev_frame()
-    @current_frame -= 1
-  end
-  
-  def next_frame()
-    @current_frame += 1
-  end
-  
-  def goto(frame) #executes
-    @current_frame = frame
-  end
-  
-  def goto_and_play(frame)
-    @current_frame = frame - 1
-	release_frame()
-  end
-  
-  def goto_and_stop(frame)
-    @current_frame = frame
-	hold_frame()
-  end
-  
-  def reset_to(symbol)
-    @status = symbol
-	@current_frame = 0
-	@frame_stop = false
-  end
-  
-  def collide(pool)
-	pool.each do |entity|
-	  next if entity == self
-	  if @event.collides?(entity.body)
-	    yield(entity)
-	  end
-	end
+  def delta()
+    $window.elapsed()
   end
 end
