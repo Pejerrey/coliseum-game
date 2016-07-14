@@ -4,11 +4,11 @@ class SceneIntro < Scene
     case @director
 	when :intro_init
 	  @object_pool << Picture.new(:i_loading,
-		               Still.new(Gosu::Image.from_text("Loading", 20), 1),
+	                   :text, "Loading", 20, 1,
 		   			   $window.width - 100, $window.height - 50)
 	  @object_pool << Picture.new(:i_grin,
-		               Still.new(Gosu::Image.new("media/grin.png"), 0),
-					   $window.width - 200,$window.height - 240)
+	                   :still, "grin.png",
+					   $window.width - 200, $window.height - 240)
 	  @object_pool << Timer.new(:t_load)
 	  obj(:t_load).start(1000)
 	when :intro

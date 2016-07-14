@@ -2,29 +2,33 @@ class Player
   include DebugDrawable
   include Corporeal
   include Physical
+  include Drawable
   include Controllable
   
-  #Constructor
-  attr_accessor :tag, :body, :velocity, :controller, :status, :event, :timer
-  def initialize(tag, body, controller, velocity = Vector.new(0, 0))
+  ##Constructor
+  attr_accessor :tag, :body, :velocity, :controller, :status, :event, :timer, :image
+  def initialize(tag, body, controller, image = nil)
     @tag = tag
 	@body = body
-	@velocity = velocity
+	@velocity = Vector.new(0, 0)
 	@controller = controller
 	@status = :idling
 	@event = nil
 	@current_frame = 0
 	@remaining_frames = 0
 	@frame_stop = false
+	@image = image
   end
   
-  #Loop
+  
+  ##Loop
   def update(delta = $window.elapsed())
 	friction(delta)
 	move(delta)
   end
   
-  #Auxiliars
+  
+  ##Auxiliars
   private
   def elapsed_frames()
     return case $window.elapsed_ms()

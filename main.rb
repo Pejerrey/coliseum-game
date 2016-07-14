@@ -1,8 +1,8 @@
 require 'gosu'
 
 #Screen settings constants
-WIDTH = 800
-HEIGHT = 600
+WIDTH = 1024
+HEIGHT = 576
 CAPTION = "TEST"
 
 #Dynamically require

@@ -1,9 +1,9 @@
-class Still
+class Text
   attr_accessor :image, :z
   
   ##Constructor
-  def initialize(filename, z = 0)
-    @image = Gosu::Image.new("media/" + filename)
+  def initialize(text, size, z = 0)
+    @image = Gosu::Image.from_text(text, size)
 	@z = z
   end
   

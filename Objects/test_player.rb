@@ -1,6 +1,13 @@
 class TestPlayer < Player
   include Constants
   
+  ##Image storage
+  IDLE_FRONT ||= Still.new("test/test_idle_front.bmp")
+  IDLE_LEFT ||= Still.new("test/test_idle_side.bmp")
+  IDLE_RIGHT ||= FlippedStill.new("test/test_idle_side.bmp")
+  IDLE_BACK ||= Still.new("test/test_idle_back.bmp")
+  
+  
   ##Main
   def control(pool)
     control_update()
@@ -27,6 +34,8 @@ class TestPlayer < Player
 	velocity.apply(movement_direction(1500 * delta))
 	velocity.trim(80)
 	direction.angle = velocity.angle unless velocity.zero?
+	#image
+
   end
   
   def run(pool)

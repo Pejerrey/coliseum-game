@@ -60,9 +60,8 @@ class GameWindow < Gosu::Window
     @scenes.each do |scene|
 	  scene.update()
     end
-	@pushed_keys.clear
-	@released_keys.clear
 	if $DEBUG_MODE
+	  $window.close() if @pushed_keys.include?(Gosu::KbEscape)
 	  $window.caption = Gosu::fps
 	  if Thread.list.size == 1
 	    Thread.new do
@@ -70,6 +69,8 @@ class GameWindow < Gosu::Window
 	    end.run
 	  end
 	end
+	@pushed_keys.clear
+	@released_keys.clear
   end
 
   def draw()
