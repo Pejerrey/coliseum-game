@@ -1,23 +1,26 @@
 class TestPlayer < Player
   include Constants
   
-  ##Image storage
-  IDLE_FRONT ||= Still.new(:idle_front, "test/test_idle_front.bmp")
-  IDLE_LEFT ||= Still.new(:idle_left, "test/test_idle_side.bmp", 0, true)
-  IDLE_RIGHT ||= Still.new(:idle_right, "test/test_idle_side.bmp")
-  IDLE_BACK ||= Still.new(:idle_back, "test/test_idle_back.bmp")
-  WALK_FRONT ||= Still.new(:walk_front, "test/test_walk_front.bmp")
-  WALK_LEFT ||= Still.new(:walk_left, "test/test_walk_side.bmp", 0, true)
-  WALK_RIGHT ||= Still.new(:walk_right, "test/test_walk_side.bmp")
-  WALK_BACK ||= Still.new(:walk_back, "test/test_walk_back.bmp")
-  RUN_FRONT ||= Still.new(:run_front, "test/test_run_front.bmp")
-  RUN_LEFT ||= Still.new(:run_left, "test/test_run_side.bmp", 0, true)
-  RUN_RIGHT ||= Still.new(:run_right, "test/test_run_side.bmp")
-  RUN_BACK ||= Still.new(:run_back, "test/test_run_back.bmp")
-  THRUST_FRONT ||= Still.new(:thrust_front, "test/test_thrust_front.bmp")
-  THRUST_LEFT ||= Still.new(:thrust_left, "test/test_thrust_side.bmp", 0, true)
-  THRUST_RIGHT ||= Still.new(:thrust_right, "test/test_thrust_side.bmp")
-  THRUST_BACK ||= Still.new(:thrust_back, "test/test_thrust_back.bmp")
+  def initialize(tag, body, controller, image = nil)
+    super(tag, body, controller, image)
+	@assets =
+		[Still.new(:idle_front, "test/test_idle_front.bmp") ,
+		Still.new(:idle_left, "test/test_idle_side.bmp", 0, true) ,
+		Still.new(:idle_right, "test/test_idle_side.bmp") ,
+		Still.new(:idle_back, "test/test_idle_back.bmp") ,
+		Still.new(:walk_front, "test/test_walk_front.bmp") ,
+		Still.new(:walk_left, "test/test_walk_side.bmp", 0, true) ,
+		Still.new(:walk_right, "test/test_walk_side.bmp") ,
+		Still.new(:walk_back, "test/test_walk_back.bmp") ,
+		Still.new(:run_front, "test/test_run_front.bmp") ,
+		Still.new(:run_left, "test/test_run_side.bmp", 0, true) ,
+		Still.new(:run_right, "test/test_run_side.bmp") ,
+		Still.new(:run_back, "test/test_run_back.bmp") ,
+		Still.new(:thrust_front, "test/test_thrust_front.bmp") ,
+		Still.new(:thrust_left, "test/test_thrust_side.bmp", 0, true) ,
+		Still.new(:thrust_right, "test/test_thrust_side.bmp") ,
+		Still.new(:thrust_back, "test/test_thrust_back.bmp")]
+  end
   
   
   ##Main
@@ -55,29 +58,10 @@ class TestPlayer < Player
 	velocity.apply(movement_direction(1500 * delta))
 	velocity.trim(80)
 	direction.angle = velocity.angle unless velocity.zero?
-	#image
 	if velocity.zero?
-	  case direction.angle
-	  when 45...135
-	    @image = IDLE_RIGHT #Turned
-	  when 135...225
-	    @image = IDLE_FRONT
-	  when 225...315
-	    @image = IDLE_LEFT
-	  when 315..360, 0...45
-	    @image = IDLE_BACK
-	  end
+	  @image = angled_graphic(:idle)
 	else
-	  case direction.angle
-	  when 45...135
-	    @image = WALK_RIGHT #Turned
-	  when 135...225
-	    @image = WALK_FRONT
-	  when 225...315
-	    @image = WALK_LEFT
-	  when 315..360, 0...45
-	    @image = WALK_BACK
-	  end
+	  @image = angled_graphic(:walk)
 	end
   end
   
@@ -85,17 +69,7 @@ class TestPlayer < Player
 	velocity.apply(movement_direction(1200 * delta))
 	velocity.trim(175)
 	direction.angle = velocity.angle unless velocity.zero?
-	#image
-	case direction.angle
-	when 45...135
-	  @image = RUN_RIGHT #Turned
-	when 135...225
-	@image = RUN_FRONT
-	when 225...315
-	  @image = RUN_LEFT
-	when 315..360, 0...45
-	  @image = RUN_BACK
-	end
+	@image = angled_graphic(:run)
   end
   
   # def step(pool)

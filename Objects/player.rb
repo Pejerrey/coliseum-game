@@ -63,4 +63,23 @@ class Player
   def delta()
     $window.elapsed()
   end
+  
+  def graphic(sym)
+    obj = @assets.find{ |elem| elem.tag == sym }
+	raise "Graphic not found #{sym}" unless obj
+	return obj
+  end
+  
+  def angled_graphic(sym)
+    case direction.angle
+	  when 45...135
+	    return graphic(:"#{sym}_right")
+	  when 135...225
+	    return graphic(:"#{sym}_front")
+	  when 225...315
+	    return graphic(:"#{sym}_left")
+	  when 315..360, 0...45
+	    return graphic(:"#{sym}_back")
+	  end
+	end
 end
