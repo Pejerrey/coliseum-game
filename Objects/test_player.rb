@@ -2,22 +2,22 @@ class TestPlayer < Player
   include Constants
   
   ##Image storage
-  IDLE_FRONT ||= Still.new("test/test_idle_front.bmp")
-  IDLE_LEFT ||= FlippedStill.new("test/test_idle_side.bmp")
-  IDLE_RIGHT ||= Still.new("test/test_idle_side.bmp")
-  IDLE_BACK ||= Still.new("test/test_idle_back.bmp")
-  WALK_FRONT ||= Still.new("test/test_walk_front.bmp")
-  WALK_LEFT ||= FlippedStill.new("test/test_walk_side.bmp")
-  WALK_RIGHT ||= Still.new("test/test_walk_side.bmp")
-  WALK_BACK ||= Still.new("test/test_walk_back.bmp")
-  RUN_FRONT ||= Still.new("test/test_run_front.bmp")
-  RUN_LEFT ||= FlippedStill.new("test/test_run_side.bmp")
-  RUN_RIGHT ||= Still.new("test/test_run_side.bmp")
-  RUN_BACK ||= Still.new("test/test_run_back.bmp")
-  THRUST_FRONT ||= Still.new("test/test_thrust_front.bmp")
-  THRUST_LEFT ||= FlippedStill.new("test/test_thrust_side.bmp")
-  THRUST_RIGHT ||= Still.new("test/test_thrust_side.bmp")
-  THRUST_BACK ||= Still.new("test/test_thrust_back.bmp")
+  IDLE_FRONT ||= Still.new(:idle_front, "test/test_idle_front.bmp")
+  IDLE_LEFT ||= Still.new(:idle_left, "test/test_idle_side.bmp", 0, true)
+  IDLE_RIGHT ||= Still.new(:idle_right, "test/test_idle_side.bmp")
+  IDLE_BACK ||= Still.new(:idle_back, "test/test_idle_back.bmp")
+  WALK_FRONT ||= Still.new(:walk_front, "test/test_walk_front.bmp")
+  WALK_LEFT ||= Still.new(:walk_left, "test/test_walk_side.bmp", 0, true)
+  WALK_RIGHT ||= Still.new(:walk_right, "test/test_walk_side.bmp")
+  WALK_BACK ||= Still.new(:walk_back, "test/test_walk_back.bmp")
+  RUN_FRONT ||= Still.new(:run_front, "test/test_run_front.bmp")
+  RUN_LEFT ||= Still.new(:run_left, "test/test_run_side.bmp", 0, true)
+  RUN_RIGHT ||= Still.new(:run_right, "test/test_run_side.bmp")
+  RUN_BACK ||= Still.new(:run_back, "test/test_run_back.bmp")
+  THRUST_FRONT ||= Still.new(:thrust_front, "test/test_thrust_front.bmp")
+  THRUST_LEFT ||= Still.new(:thrust_left, "test/test_thrust_side.bmp", 0, true)
+  THRUST_RIGHT ||= Still.new(:thrust_right, "test/test_thrust_side.bmp")
+  THRUST_BACK ||= Still.new(:thrust_back, "test/test_thrust_back.bmp")
   
   
   ##Main

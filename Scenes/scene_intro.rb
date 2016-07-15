@@ -4,10 +4,10 @@ class SceneIntro < Scene
     case @director
 	when :intro_init
 	  @object_pool << Picture.new(:i_loading,
-	                   :text, "Loading", 20, 1,
+	                   Text.new(nil, "Loading", 20, 1),
 		   			   $window.width - 100, $window.height - 50)
 	  @object_pool << Picture.new(:i_grin,
-	                   :still, "grin.png",
+	                   Still.new(nil, "grin.png"),
 					   $window.width - 200, $window.height - 240)
 	  @object_pool << Timer.new(:t_load)
 	  obj(:t_load).start(1000)

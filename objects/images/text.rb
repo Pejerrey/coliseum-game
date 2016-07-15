@@ -1,8 +1,9 @@
 class Text
-  attr_accessor :image, :z
+  attr_accessor :tag, :image, :z
   
   ##Constructor
-  def initialize(text, size, z = 0)
+  def initialize(tag, text, size, z = 0)
+    @tag = tag
     @image = Gosu::Image.from_text(text, size)
 	@z = z
   end
