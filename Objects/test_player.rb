@@ -1,23 +1,40 @@
 class TestPlayer < Player
   include Constants
   
+  SCALE = 1.6
+  
   def initialize(tag, body, controller, image = nil)
     super(tag, body, controller, image)
 	@assets =
-		[Still.new(:idle_front, "test/test_idle_front.bmp") ,
-		Still.new(:idle_left, "test/test_idle_side.bmp", 0, true) ,
-		Still.new(:idle_right, "test/test_idle_side.bmp") ,
-		Still.new(:idle_back, "test/test_idle_back.bmp") ,
-		Still.new(:walk_front, "test/test_walk_front.bmp") ,
-		Still.new(:walk_left, "test/test_walk_side.bmp", 0, true) ,
-		Still.new(:walk_right, "test/test_walk_side.bmp") ,
-		Still.new(:walk_back, "test/test_walk_back.bmp") ,
+		[Still.new(:idle_front, "test/test_idle_front.bmp", 0, SCALE, SCALE) ,
+		Still.new(:idle_left, "test/test_idle_side.bmp", 0, -SCALE, SCALE) ,
+		Still.new(:idle_right, "test/test_idle_side.bmp", 0, SCALE, SCALE) ,
+		Still.new(:idle_back, "test/test_idle_back.bmp", 0, SCALE, SCALE) ,
+		
+		Loop.new(:walk_front, ["test/test_idle_front.bmp", 400,
+		                       "test/test_walk1_front.bmp", 400,
+							   "test/test_idle_front.bmp", 400,
+							   "test/test_walk2_front.bmp", 400], 0, SCALE, SCALE) ,
+		Loop.new(:walk_left, ["test/test_idle_side.bmp", 400,
+		                       "test/test_walk1_side.bmp", 400,
+							   "test/test_idle_side.bmp", 400,
+							   "test/test_walk2_side.bmp", 400], 0, -SCALE, SCALE) ,
+		Loop.new(:walk_right, ["test/test_idle_side.bmp", 400,
+		                       "test/test_walk1_side.bmp", 400,
+							   "test/test_idle_side.bmp", 400,
+							   "test/test_walk2_side.bmp", 400], 0, SCALE, SCALE) ,
+		Loop.new(:walk_back, ["test/test_idle_back.bmp", 400,
+		                      "test/test_walk1_back.bmp", 400,
+							  "test/test_idle_back.bmp", 400,
+							  "test/test_walk2_back.bmp", 400], 0, SCALE, SCALE) ,
+		
 		Still.new(:run_front, "test/test_run_front.bmp") ,
-		Still.new(:run_left, "test/test_run_side.bmp", 0, true) ,
+		Still.new(:run_left, "test/test_run_side.bmp", 0, -1) ,
 		Still.new(:run_right, "test/test_run_side.bmp") ,
 		Still.new(:run_back, "test/test_run_back.bmp") ,
+		
 		Still.new(:thrust_front, "test/test_thrust_front.bmp") ,
-		Still.new(:thrust_left, "test/test_thrust_side.bmp", 0, true) ,
+		Still.new(:thrust_left, "test/test_thrust_side.bmp", 0, -1) ,
 		Still.new(:thrust_right, "test/test_thrust_side.bmp") ,
 		Still.new(:thrust_back, "test/test_thrust_back.bmp")]
   end

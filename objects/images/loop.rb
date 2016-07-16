@@ -1,8 +1,8 @@
 class Loop
-  attr_accessor :tag, :image, :z, :flipped
+  attr_accessor :tag, :image, :z, :x_scale, :y_scale, :loop_start
   
   ##Constructor
-  def initialize(tag, sequence_temp, z = 0)
+  def initialize(tag, sequence_temp, z = 0, x_scale = 1, y_scale = 1)
     @tag = tag
 	@sequence = []
 	previous_time = 0
@@ -12,6 +12,8 @@ class Loop
 	  previous_time = @sequence.last[:time]
 	end
 	@z = z
+	@x_scale = x_scale
+	@y_scale = y_scale
 	@loop_start = now()
   end
   
@@ -29,14 +31,16 @@ class Loop
   end
   
   ##Loop
-  def draw(x, y)
+  def draw(x, y, angle = 0)
     loop_time = (now() - @loop_start) % loop_size()
-	draw_i = 0
 	@sequence.each_with_index do |frame, i|
-	  break if loop_time > frame[:time]
-	  draw_i = i
+	  if loop_time < frame[:time]
+	    frame[:image].draw_rot(x, y, @z,
+	                           angle, 0.5, 0.5,
+					           @x_scale, @y_scale)
+		return
+	  end
 	end
-	@sequence[draw_i][:image].draw(x - width/2, y - height/2, @z)
   end
   
   ##Auxiliars

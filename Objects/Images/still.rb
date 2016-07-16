@@ -1,12 +1,14 @@
 class Still
-  attr_accessor :tag, :image, :z, :flipped
+  attr_accessor :tag, :image, :z
+  attr_accessor :x_scale, :y_scale
   
   ##Constructor
-  def initialize(tag, filename, z = 0, flipped = false)
+  def initialize(tag, filename, z = 0, x_scale = 1, y_scale = 1)
     @tag = tag
     @image = Gosu::Image.new("media/" + filename)
 	@z = z
-	@flipped = flipped
+	@x_scale = x_scale
+	@y_scale = y_scale
   end
   
   ##Accessors
@@ -19,11 +21,9 @@ class Still
   end
   
   ##Loop
-  def draw(x, y)
-    if @flipped
-	  @image.draw(x + width/2, y - height/2, @z, -1)
-	else
-      @image.draw(x - width/2, y - height/2, @z)
-	end
+  def draw(x, y, angle = 0)
+	@image.draw_rot(x, y, @z,
+	                angle, 0.5, 0.5,
+					@x_scale, @y_scale)
   end
 end

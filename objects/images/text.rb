@@ -18,7 +18,7 @@ class Text
   end
   
   ##Loop
-  def draw(x, y)
-    @image.draw(x - width/2, y - height/2, @z)
+  def draw(x, y, angle = 0)
+    @image.draw_rot(x, y, @z, angle)
   end
 end
