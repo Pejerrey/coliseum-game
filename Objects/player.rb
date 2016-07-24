@@ -2,7 +2,7 @@ class Player
   include DebugDrawable
   include Corporeal
   include Physical
-  include Drawable
+  #include Drawable
   include Controllable
   
   ##Constructor

@@ -11,27 +11,18 @@ class TestPlayer < Player
   ##Main
   def control(pool)
     control_update()
-	
 	case @status
-	when :idling, :running
+	when :idling, :guarding
 	  if @status == :idling
 	    walk()
-	  	if combo?(:left, 200, :left) || combo?(:right, 200, :right) ||
-		   combo?(:up, 200, :up) || combo?(:down, 200, :down)
-		  @status = :running
-		end
-	  else
-	    run()
-		if !right? && !left? && !down? && !up?
-		  @status = :idling 
-		end
+		@status = :guarding if c?
+	  elsif @status == :guarding
+	    guard()
+		@status = :idling unless c?
 	  end
 	  @status = :slashing if a?
 	  @status = :thrusting if b?
-	  @status = :stepping_in if c? && arrow?
-	
-	when :stepping_in then step_in(pool)
-	when :stepping_out then step_out(pool)
+	  
 	
 	when :slashing then slash(pool)
 	when :thrusting then thrust(pool)
@@ -40,18 +31,17 @@ class TestPlayer < Player
 	else
 	  raise "Unknown status #{@status}"
 	end
-	
   end
   
   
   ##Passives
   def walk()
-	velocity.apply(movement_direction(1500 * delta))
-	velocity.trim(80)
-	unless velocity.zero?
-	  if target
-		direction.angle = Vector.new(target.x - x, target.y - y).angle
-      else
+	velocity.apply(movement_direction(2000 * delta))
+	velocity.trim(100)
+	if target
+	  direction.angle = Vector.new(target.x - x, target.y - y).angle
+    else
+	  unless velocity.zero?
 	    direction.angle = velocity.angle
 	  end
 	end
@@ -62,69 +52,32 @@ class TestPlayer < Player
 	end
   end
   
-  def run()
-	velocity.apply(movement_direction(1500 * delta))
-	velocity.trim(160)
-	direction.angle = velocity.angle unless velocity.zero?
-	@image = angled_graphic(:run)
-  end
-  
-  
-  ##States
-  def step_in(pool)
-    frame_loop() do |frame|
-	  case frame
-	  when 1
-	    velocity.reset()
-		if movement_direction.zero?
-		  @f_step = direction.dup.with_norm(200)
-		else
-		  @f_step = movement_direction(200)
-		end
-		apply_force(@f_step)
-	  when 8
-	    velocity.reset()
-	  when 9...INF
-	    unless arrow? && c?
-		  reset_to(:stepping_out)
-		  return
-		end
+  def guard()
+    velocity.apply(movement_direction(2000 * delta))
+	velocity.trim(70)
+	if target
+	  direction.angle = Vector.new(target.x - x, target.y - y).angle
+    else
+	  unless velocity.zero?
+	    direction.angle = velocity.angle
 	  end
 	end
-  end
-	
-  def step_out(pool)
-    frame_loop() do |frame|
-	  case frame
-	  when 1
-	    velocity.reset()
-	    apply_force(-@f_step)
-	  when 8
-	    velocity.reset()
-	  when 9...INF
-	    unless c?
-	      reset_to(:idling)
-		  return
-		end
-	    if arrow?
-		  reset_to(:stepping_in)
-		  return
-		end
-	  end
-	end
+	#@image = angled_graphic(:guard)
   end
   
   
   ##Actions
   def slash(pool)
-    regular_attack(9, 6, 6) do |init|
+    regular_attack(15, 2, 15) do |init|
 	  if init
 	    @event = Event.new(Rectangle.new(0, 0, 40, 25))
 	  else
 	    @event.in_front_of(self, 25)
 		@event.collide(pool-[self]) do |entity|
-		  entity.apply_force(direction.with_norm(100))
-		  entity.status = :hurting
+		  unless entity.status == :guarding
+		    entity.apply_force(direction.with_norm(100))
+		    entity.status = :hurting
+		  end
 		  @event = nil
 	    end
 	  end
@@ -132,14 +85,16 @@ class TestPlayer < Player
   end
   
   def thrust(pool)
-    regular_attack(9, 6, 6) do |init|
+    regular_attack(15, 2, 15) do |init|
 	  if init
-	    @event = Event.new(Rectangle.new(0, 0, 25, 30))
+	    @event = Event.new(Rectangle.new(0, 0, 10, 35))
 	  else
 	    @event.in_front_of(self, 30)
 		@event.collide(pool-[self]) do |entity|
-		  entity.apply_force(direction.with_norm(100))
-		  entity.status = :hurting
+		  unless entity.status == :guarding
+		    entity.apply_force(direction.with_norm(100))
+		    entity.status = :hurting
+		  end
 		  @event = nil
 	    end
 	  end
