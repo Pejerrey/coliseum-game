@@ -34,8 +34,8 @@ class Scene
   
   def draw()
     @object_pool.each do |object|
-	  object.draw() if object.respond_to?(:draw)
-	  object.debug_draw() if $DEBUG_MODE && object.respond_to?(:debug_draw)
+	  object.draw() if object.is_a?(Drawable)
+	  object.debug_draw() if $DEBUG_MODE && object.is_a?(DebugDrawable)
 	end
   end
   

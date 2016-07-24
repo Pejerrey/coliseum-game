@@ -26,6 +26,23 @@ class Player
 	move(delta)
   end
   
+  def debug_draw()
+    body.draw()
+	(velocity/2).draw(body.x, body.y)
+	(body.direction*20).draw(body.x, body.y, FUCHSIA)
+	event.debug_draw() if event
+	case status
+	when :idling, :running
+	  body.c = YELLOW
+	when :slashing, :thrusting
+	  body.c = GREEN
+	when :hurting
+	  body.c = RED
+	when :guarding
+	  body.c = GRAY
+	end
+  end
+  
   
   ##Auxiliars
   private
