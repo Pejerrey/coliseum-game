@@ -6,8 +6,8 @@ class Player
   include Controllable
   
   ##Constructor
-  attr_accessor :tag, :body, :velocity, :controller, :status, :event, :timer, :image, :current_frame
-  def initialize(tag, body, controller, image = nil)
+  attr_accessor :tag, :body, :velocity, :controller, :status, :event, :timer, :image, :current_frame, :target
+  def initialize(tag, body, controller, z = nil)
     @tag = tag
 	@body = body
 	@velocity = Vector.new(0, 0)
@@ -15,7 +15,8 @@ class Player
 	@status = :idling
 	@event = nil
 	@current_frame = 0
-	@image = image
+	@image = nil
+	@target = nil
   end
   
   
@@ -80,6 +81,25 @@ class Player
 	    return graphic(:"#{sym}_left")
 	  when 315..360, 0...45
 	    return graphic(:"#{sym}_back")
+	end
+  end
+  
+  def regular_attack(startup, active, recovery)
+    frame_loop do |frame|
+	  case frame
+	  when (startup + 1)..(startup + active) #active
+	    yield(true)	if frame == startup + 1
+	    yield(false) if @event
+	  
+	  when (startup + active + recovery + 1) #exit
+	    @event = nil
+	    reset_to(:idling)
+		return
+	  
+	  when (startup + active + 1)
+	    @event = nil #doesn't really do much, for debug purposes.
 	  end
 	end
+  end
+  
 end

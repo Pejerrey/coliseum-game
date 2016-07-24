@@ -26,6 +26,14 @@ module Corporeal
     body.direction = dir.dup()
   end
   
+  def c()
+    body.c
+  end
+  
+  def c=(c)
+    body.c = c
+  end
+  
   
   ##Transformation
   def move_to(x, y)
