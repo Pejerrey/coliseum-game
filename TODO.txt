@@ -3,3 +3,4 @@ TODO
 -Add a "Forward/Backwards" direction for combo,
   and changed the slash/thrust input.
 -Add stamina (module Durable)
+-Change combo/command to receive numbers instead of symbols

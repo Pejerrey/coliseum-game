@@ -28,6 +28,24 @@ module Controllable
     controller.c
   end
   
+  def front
+    return case body.direction.angle
+	       when 45...135 then right
+	       when 135...225 then down
+		   when 225...315 then left
+		   when 315..360, 0...45 then up
+	       end
+  end
+  
+  def back
+    return case front
+	       when up then down
+		   when down then up
+		   when left then right
+		   when right then left
+		   end
+  end
+  
   def up?
     controller.active_keys.include?(up)
   end
@@ -60,6 +78,14 @@ module Controllable
     controller.active_keys.include?(c)
   end
   
+  def front?
+    controller.active_keys.include?(front)
+  end
+  
+  def back?
+    controller.active_keys.include?(back)
+  end
+  
   def active_keys()
     controller.active_keys()
   end
@@ -78,6 +104,10 @@ module Controllable
     
   def last_input?(key)
     controller.last_input?(key)
+  end
+  
+  def command?(*keys)
+    controller.command?(*keys)
   end
   
   def combo?(*args)

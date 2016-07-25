@@ -54,20 +54,22 @@ class Controller
     return @command_list.size > 0 && @command_list.last[:keys].include?(key)
   end
   
-  def combo?(*args)
+  def command?(*keys)
+    return keys.all?{ |key| @active_keys.include?(key) }
+  end
+  
+  def combo?(*args) #CHANGE THIIIS
     index = @command_list.size - 1
     args.reverse_each do |x|
 	  return false if index < 0
-	  #puts x         #####
 	  if x.is_a?(Symbol)
 	    #map symbols
-	    key = nil
-		case x
-		when :left then key = left
-		when :right then key = right
-		when :up then key = up
-		when :down then key = down
-		end
+	    key = case x
+		      when :left then left
+		      when :right then right
+		      when :up then up
+		      when :down then down
+		      end
 		#check key
 		return false unless @command_list[index][:keys].include?(key)
 		if index == @command_list.size - 1
@@ -82,7 +84,6 @@ class Controller
 	    raise "x es cualca"
 	  end
 	end
-	#puts ""  #############
 	return true
   end
   

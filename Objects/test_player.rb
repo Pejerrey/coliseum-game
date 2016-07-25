@@ -15,14 +15,13 @@ class TestPlayer < Player
 	when :idling, :guarding
 	  if @status == :idling
 	    walk()
-		@status = :guarding if c?
+		@status = :guarding if b?
 	  elsif @status == :guarding
 	    guard()
-		@status = :idling unless c?
+		@status = :idling unless b?
 	  end
-	  @status = :slashing if a?
-	  @status = :thrusting if b?
-	  
+	  @status = :slashing if command?(back, a)
+	  @status = :thrusting if command?(front, a)
 	
 	when :slashing then slash(pool)
 	when :thrusting then thrust(pool)
@@ -41,15 +40,9 @@ class TestPlayer < Player
 	if target
 	  direction.angle = Vector.new(target.x - x, target.y - y).angle
     else
-	  unless velocity.zero?
-	    direction.angle = velocity.angle
-	  end
+	  direction.angle = velocity.angle unless velocity.zero?
 	end
-	if velocity.zero?
-	  @image = angled_graphic(:idle)
-	else
-	  @image = angled_graphic(:walk)
-	end
+	@image = velocity.zero ? angled_graphic(:idle) : angled_graphic(:walk)
   end
   
   def guard()
@@ -58,11 +51,9 @@ class TestPlayer < Player
 	if target
 	  direction.angle = Vector.new(target.x - x, target.y - y).angle
     else
-	  unless velocity.zero?
-	    direction.angle = velocity.angle
-	  end
+	  direction.angle = velocity.angle unless velocity.zero?
 	end
-	#@image = angled_graphic(:guard)
+	#@image = velocity.zero ? angled_graphic(:guard_i) : angled_graphic(:guard_w)
   end
   
   
@@ -110,5 +101,5 @@ class TestPlayer < Player
 	  end
 	end
   end
-  	
+
 end
