@@ -36,9 +36,11 @@ class Player
 	  body.c = YELLOW
 	when :slashing, :thrusting, :knocking
 	  body.c = GREEN
-	when :tumbling, :hurting
+	when :tumbling
+	  body.c = FUCHSIA
+	when :hurting
 	  body.c = RED
-	when :guarding
+	when :guarding, :blocking
 	  body.c = GRAY
 	end
   end

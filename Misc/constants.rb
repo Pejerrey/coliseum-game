@@ -30,10 +30,11 @@ module Constants
   S = Gosu::KbS
   A = Gosu::KbA
   D = Gosu::KbD
-  
   G = Gosu::KbG
   H = Gosu::KbH
   J = Gosu::KbJ
+  
+  R = Gosu::KbR
   
   N1 = Gosu::KbNumpad1
   N2 = Gosu::KbNumpad2

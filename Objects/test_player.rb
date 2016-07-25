@@ -93,9 +93,9 @@ class TestPlayer < Player
 	    @event.in_front_of(self, 25)
 		@event.collide(pool-[self]) do |entity|
 		  if entity.status == :guarding
-		    entity.status = :tumbling
-		    self.apply_force(-direction.with_norm(50))
-			entity.apply_force(direction.with_norm(120))
+		    entity.status = :blocking
+		    self.apply_force(-direction.with_norm(75))
+			entity.apply_force(direction.with_norm(125))
 			entity.shield_life -= 20
 		  else
 		    entity.apply_force(direction.with_norm(50))
@@ -115,9 +115,9 @@ class TestPlayer < Player
 	    @event.in_front_of(self, 30)
 		@event.collide(pool-[self]) do |entity|
 		  if entity.status == :guarding
-		    entity.status = :tumbling
-			self.apply_force(-direction.with_norm(50))
-		  	entity.apply_force(direction.with_norm(120))
+		    entity.status = :blocking
+			self.apply_force(-direction.with_norm(75))
+		  	entity.apply_force(direction.with_norm(125))
 			entity.shield_life -= 20
 		  else
 		    entity.apply_force(direction.with_norm(50))
@@ -157,6 +157,6 @@ class TestPlayer < Player
   end
   
   def hurt()
-    wait(24)
+    ##
   end
 end
