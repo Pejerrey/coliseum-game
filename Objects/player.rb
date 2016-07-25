@@ -34,9 +34,9 @@ class Player
 	case status
 	when :idling, :running
 	  body.c = YELLOW
-	when :slashing, :thrusting
+	when :slashing, :thrusting, :knocking
 	  body.c = GREEN
-	when :hurting
+	when :tumbling, :hurting
 	  body.c = RED
 	when :guarding
 	  body.c = GRAY
@@ -101,7 +101,7 @@ class Player
 	end
   end
   
-  def regular_attack(startup, active, recovery)
+  def regular_event(startup, active, recovery)
     frame_loop do |frame|
 	  case frame
 	  when (startup + 1)..(startup + active) #active
