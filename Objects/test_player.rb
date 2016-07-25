@@ -26,20 +26,27 @@ class TestPlayer < Player
 	end
   end
   
-  
+
   ##Main
   def control(pool)
     control_update()
 	#passive triggers
 	case @status
 	when :idling
+	  @status = :running if combo?(:left, 150, :left) ||
+	                        combo?(:right, 150, :right) ||
+		                    combo?(:up, 150, :up) ||
+							combo?(:down, 150, :down)
 	  @status = :guarding if b? && @shield_life > 0
-	when :guarding
+	when :running
+	  @status = :idling if !right? && !left? && !down? && !up?
+	  @status = :guarding if b? && @shield_life > 0
+    when :guarding
 	  @status = :idling unless b?
 	end
 	#active triggers
 	case @status
-	when :idling
+	when :idling, :running
 	  @status = :slashing if a?
 	  @status = :thrusting if command?(front, a)
 	when :guarding
@@ -48,6 +55,7 @@ class TestPlayer < Player
 	#actions
 	case @status
 	when :idling then walk()
+	when :running then run()
 	when :guarding then guard()
 	when :slashing then slash(pool)
 	when :thrusting then thrust(pool)
@@ -81,6 +89,13 @@ class TestPlayer < Player
 	  direction.angle = velocity.angle unless velocity.zero?
 	end
 	#@image = velocity.zero ? angled_graphic(:guard_i) : angled_graphic(:guard_w)
+  end
+  
+  def run()
+	velocity.apply(movement_direction(1500 * delta))
+	velocity.trim(160)
+	direction.angle = velocity.angle unless velocity.zero?
+	@image = angled_graphic(:run)
   end
   
   
