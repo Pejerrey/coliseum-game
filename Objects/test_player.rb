@@ -2,9 +2,28 @@ class TestPlayer < Player
   include Constants
   include AssetsManager
   
+  attr_accessor :shield_life, :shield_endurance
+  
   def initialize(tag, body, controller, z = nil)
     super(tag, body, controller, z)
 	load_assets()
+	@shield_endurance = 50
+	@shield_life = @shield_endurance
+  end
+  
+  
+  ##Loop
+  def draw()
+    super()
+	if shield_life > 0
+	  if tag == :p_1
+	    GREY_BAR.draw_rot(50, 50, 0, 0,
+		                  0, 0.5,  @shield_life, 1)
+	  elsif tag == :p_2
+	    GREY_BAR.draw_rot($window.width - 50, $window.height - 50, 0, 0,
+		                  1, 0.5,  @shield_life, 1)
+	  end
+	end
   end
   
   
@@ -14,7 +33,7 @@ class TestPlayer < Player
 	#passive triggers
 	case @status
 	when :idling
-	  @status = :guarding if b?
+	  @status = :guarding if b? && @shield_life > 0
 	when :guarding
 	  @status = :idling unless b?
 	end
@@ -32,9 +51,10 @@ class TestPlayer < Player
 	when :guarding then guard()
 	when :slashing then slash(pool)
 	when :thrusting then thrust(pool)
-	when :knocking then knock(pool)
-	when :tumbling then tumble(pool)
-	when :hurting then hurt(pool)
+	when :knocking then knock(pool)	
+	when :blocking then blockstun()
+	when :tumbling then tumble()
+	when :hurting then hurt()
 	else raise "Unknown status #{@status}"
 	end
   end
@@ -72,7 +92,12 @@ class TestPlayer < Player
 	  else
 	    @event.in_front_of(self, 25)
 		@event.collide(pool-[self]) do |entity|
-		  unless entity.status == :guarding
+		  if entity.status == :guarding
+		    entity.status = :tumbling
+		    self.apply_force(-direction.with_norm(50))
+			entity.apply_force(direction.with_norm(120))
+			entity.shield_life -= 20
+		  else
 		    entity.apply_force(direction.with_norm(50))
 		    entity.status = :hurting
 		  end
@@ -89,7 +114,12 @@ class TestPlayer < Player
 	  else
 	    @event.in_front_of(self, 30)
 		@event.collide(pool-[self]) do |entity|
-		  unless entity.status == :guarding
+		  if entity.status == :guarding
+		    entity.status = :tumbling
+			self.apply_force(-direction.with_norm(50))
+		  	entity.apply_force(direction.with_norm(120))
+			entity.shield_life -= 20
+		  else
 		    entity.apply_force(direction.with_norm(50))
 		    entity.status = :hurting
 		  end
@@ -108,10 +138,8 @@ class TestPlayer < Player
 	  else
 	    @event.in_front_of(self, 15)
 		@event.collide(pool-[self]) do |entity|
-		  unless entity.status == :guarding
-		    entity.apply_force(direction.with_norm(125))
-		    entity.status = :tumbling
-		  end
+		  entity.apply_force(direction.with_norm(125))
+		  entity.status = :tumbling
 		  @event = nil
 	    end
 	  end
@@ -120,24 +148,15 @@ class TestPlayer < Player
   
   
   ##Specials
-  def tumble(pool)
-    frame_loop do |frame|
-	  if frame == 14
-	    @status = :idling
-		@current_frame = 0
-		return
-	  end
-	end
+  def blockstun()
+    wait(12)
   end
   
-  def hurt(pool)
-    frame_loop do |frame|
-	  if frame == 24
-	    @status = :idling
-		@current_frame = 0
-		return
-	  end
-	end
+  def tumble()
+    wait(14)
   end
-
+  
+  def hurt()
+    wait(24)
+  end
 end

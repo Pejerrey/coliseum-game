@@ -1,6 +1,5 @@
 TODO
--Change "status" to "action"
--Add a "Forward/Backwards" direction for combo,
-  and changed the slash/thrust input.
--Add stamina (module Durable)
+-Change "Event" to "Hitbox"
+-Make Shield with a "Hitbox"?
+-Add stamina (module Durable?)
 -Change combo/command to receive numbers instead of symbols

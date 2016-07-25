@@ -81,7 +81,7 @@ class Controller
 		#next block
 		index -= 1
 	  else
-	    raise "x es cualca"
+	    raise "x es cualca (en combo?)"
 	  end
 	end
 	return true

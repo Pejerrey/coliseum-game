@@ -1,4 +1,7 @@
 module Constants
+  #Images
+  GREY_BAR = Gosu::Image.new('media/grey_bar.bmp')
+  
   #Physics
   FRICTION = 600
   
@@ -35,6 +38,10 @@ module Constants
   N1 = Gosu::KbNumpad1
   N2 = Gosu::KbNumpad2
   N3 = Gosu::KbNumpad3
+  
+  COMMA = Gosu::KbComma
+  PERIOD = Gosu::KbPeriod
+  SLASH = Gosu::KbSlash
   
   MSLEFT = Gosu::MsLeft
 end

@@ -2,7 +2,7 @@ class Player
   include DebugDrawable
   include Corporeal
   include Physical
-  #include Drawable
+  include Drawable
   include Controllable
   
   ##Constructor
@@ -119,4 +119,13 @@ class Player
 	end
   end
   
+  def wait(size)
+    frame_loop do |frame|
+	  if frame == size
+	    @status = :idling
+		@current_frame = 0
+		return
+	  end
+	end
+  end
 end
