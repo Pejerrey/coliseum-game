@@ -6,7 +6,7 @@ class Player
   include Controllable
   
   ##Constructor
-  attr_accessor :tag, :body, :velocity, :controller, :status, :event, :timer, :image, :current_frame, :target
+  attr_accessor :tag, :body, :velocity, :controller, :status, :event, :timer, :image, :current_frame, :target, :assets
   def initialize(tag, body, controller, z = nil)
     @tag = tag
 	@body = body
@@ -17,6 +17,7 @@ class Player
 	@current_frame = 0
 	@image = nil
 	@target = nil
+	@assets = Hash.new()
   end
   
   
@@ -85,7 +86,7 @@ class Player
   end
   
   def graphic(sym)
-    obj = @assets.find{ |elem| elem.tag == sym }
+    obj = assets[sym]
 	raise "Graphic not found #{sym}" unless obj
 	return obj
   end

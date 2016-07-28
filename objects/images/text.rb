@@ -1,24 +1,9 @@
-class Text
-  attr_accessor :tag, :image, :z
-  
+class Text < Still
   ##Constructor
-  def initialize(tag, text, size, z = 0)
-    @tag = tag
+  def initialize(text, size, z = 0, x_scale = 1, y_scale = 1)
     @image = Gosu::Image.from_text(text, size)
 	@z = z
-  end
-  
-  ##Accessors
-  def width() 
-    return @image.width
-  end
-  
-  def height()
-    return @image.height
-  end
-  
-  ##Loop
-  def draw(x, y, angle = 0)
-    @image.draw_rot(x, y, @z, angle)
+	@x_scale = x_scale
+	@y_scale = y_scale
   end
 end
