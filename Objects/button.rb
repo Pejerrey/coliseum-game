@@ -2,9 +2,8 @@ class Button
   include DebugDrawable #debug_draw
   include Clickable #activated?
   
-  attr_accessor :tag, :body
-  def initialize(tag, body)
-	@tag = tag
+  attr_accessor :body
+  def initialize(body)
 	@body = body
   end
   

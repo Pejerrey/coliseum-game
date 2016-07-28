@@ -9,6 +9,7 @@ module AssetsManager
 	                      "test/test_idle", 400,
 						  "test/test_walk2", 400], 0, SCALE_A, SCALE_A)
 	load_set(:run, "test/test_run", 0, SCALE_B, SCALE_B)
+	load_set(:thrust, "test/test_thrust", 0, SCALE_B, SCALE_B)
   end
   
   

@@ -1,9 +1,6 @@
 class Timer
-  attr_accessor :tag
-  
   ##Constructor
-  def initialize(tag = :t)
-    @tag = tag
+  def initialize()
     @start_point = -1
 	@end_point = -1
   end

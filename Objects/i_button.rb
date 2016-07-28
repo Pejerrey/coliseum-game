@@ -3,9 +3,8 @@ class IButton
   include DebugDrawable #debug_draw
   include Drawable #draw, i_info
   
-  attr_accessor :tag, :body, :image
-  def initialize(tag, image, x, y)
-    @tag = tag
+  attr_accessor :body, :image
+  def initialize(image, x, y)
 	@image = image
 	@body = i_bounds(x, y)
   end

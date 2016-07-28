@@ -6,14 +6,14 @@ class Scene
     @visible = true
 	@next_director = :intro
 	@director = nil
-	@object_pool = []
+	@object_pool = Hash.new()
   end
   
   
   ##Accessors
   def obj(sym)
-    obj = @object_pool.find{ |elem| elem.tag == sym }
-	raise "Object not found #{sym}" unless obj
+    obj = object_pool[sym]
+	raise "Object #{sym} not found" unless obj
 	return obj
   end
   
@@ -33,7 +33,7 @@ class Scene
   end
   
   def draw()
-    @object_pool.each do |object|
+    @object_pool.each do |key, object|
 	  object.draw() if object.is_a?(Drawable)
 	  object.debug_draw() if $DEBUG_MODE && object.is_a?(DebugDrawable)
 	end
@@ -43,7 +43,7 @@ class Scene
   ##Auxiliars
   private
   def update_objects()
-    @object_pool.each do |object|
+    @object_pool.each do |key, object|
 	  object.update() if object.respond_to?(:update)
 	end
   end

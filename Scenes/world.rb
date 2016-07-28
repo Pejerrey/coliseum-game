@@ -14,10 +14,10 @@ class World < Scene
   ##Auxiliars
   private
   def inner_control()
-    puppet_pool = @object_pool.select{ |o| o.is_a?(Controllable) }
-    entity_pool = @object_pool.select{ |o| o.is_a?(Physical) }
+    puppet_pool = @object_pool.values.select{ |o| o.is_a?(Controllable) }
+    entity_pool = @object_pool.values.select{ |o| o.is_a?(Physical) }
     puppet_pool.each do |puppet| #World Triggers from Inner Object Behaviour
-	  puppet.control(entity_pool)
+	  puppet.control(entity_pool) #I send an array, not a hash!
 	end
   end
 end

@@ -1,6 +1,4 @@
 TODO
--Make "Loop" not tagged and add all "Image" accessors/behaviour. Eliminate "Still" and "Text"
--Create "Stamp" class, that stores an object and a tag.
 -Change "Event" to "Hitbox"
 -Change combo/command to receive numbers instead of symbols
 -Figure out the "z" draw bullshit

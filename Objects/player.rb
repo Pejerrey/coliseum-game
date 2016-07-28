@@ -6,9 +6,8 @@ class Player
   include Controllable
   
   ##Constructor
-  attr_accessor :tag, :body, :velocity, :controller, :status, :event, :timer, :image, :current_frame, :target, :assets
-  def initialize(tag, body, controller, z = nil)
-    @tag = tag
+  attr_accessor :body, :velocity, :controller, :status, :event, :timer, :image, :current_frame, :target, :assets
+  def initialize(body, controller, z = nil)
 	@body = body
 	@velocity = Vector.new(0, 0)
 	@controller = controller

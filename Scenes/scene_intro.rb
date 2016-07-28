@@ -3,13 +3,14 @@ class SceneIntro < Scene
     super()	
     case @director
 	when :intro_init
-	  @object_pool << Picture.new(:i_loading,
-	                   Text.new("Loading", 20, 1),
-		   			   $window.width - 100, $window.height - 50)
-	  @object_pool << Picture.new(:i_grin,
-	                   Still.new("grin.png"),
-					   $window.width - 200, $window.height - 240)
-	  @object_pool << Timer.new(:t_load)
+	  @object_pool[:i_loading] =
+	    Picture.new(Text.new("Loading", 20, 1),
+		            $window.width - 100, $window.height - 50)
+	  @object_pool[:i_grin] = 
+	    Picture.new(Still.new("grin.png"),
+					$window.width - 200, $window.height - 240)
+	  @object_pool[:t_load] =
+	    Timer.new()
 	  obj(:t_load).start(1000)
 	when :intro
 	  if obj(:t_load).done?

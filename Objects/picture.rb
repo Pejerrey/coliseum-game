@@ -1,10 +1,9 @@
 class Picture
   include Drawable
   
-  attr_accessor :tag, :body, :image
+  attr_accessor :body, :image
   
-  def initialize(tag, image, x, y)
-    @tag = tag
+  def initialize(image, x, y)
 	@body = Circle.new(x, y, 1)
 	@image = image
   end

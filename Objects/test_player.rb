@@ -4,8 +4,8 @@ class TestPlayer < Player
   
   attr_accessor :shield_life, :shield_endurance
   
-  def initialize(tag, body, controller, z = nil)
-    super(tag, body, controller, z)
+  def initialize(body, controller, z = nil)
+    super(body, controller, z)
 	load_assets()
 	@shield_endurance = 50
 	@shield_life = @shield_endurance
@@ -16,13 +16,13 @@ class TestPlayer < Player
   def draw()
     super()
 	if shield_life > 0
-	  if tag == :p_1
-	    GREY_BAR.draw_rot(50, 50, 0, 0,
-		                  0, 0.5,  @shield_life, 1)
-	  elsif tag == :p_2
-	    GREY_BAR.draw_rot($window.width - 50, $window.height - 50, 0, 0,
-		                  1, 0.5,  @shield_life, 1)
-	  end
+	  #if tag == :p_1
+	  #  GREY_BAR.draw_rot(50, 50, 0, 0,
+	  #	                  0, 0.5,  @shield_life, 1)
+	  #elsif tag == :p_2
+	  #  GREY_BAR.draw_rot($window.width - 50, $window.height - 50, 0, 0,
+	  #	                  1, 0.5,  @shield_life, 1)
+	  #end
 	end
   end
   
@@ -106,7 +106,7 @@ class TestPlayer < Player
 	    @event = Event.new(Rectangle.new(0, 0, 40, 25))
 	  else
 	    @event.in_front_of(self, 25)
-		@event.collide(pool-[self]) do |entity|
+		@event.collide(pool, self) do |entity|
 		  if entity.status == :guarding
 		    entity.status = :blocking
 		    self.apply_force(-direction.with_norm(75))
@@ -128,7 +128,7 @@ class TestPlayer < Player
 	    @event = Event.new(Rectangle.new(0, 0, 10, 35))
 	  else
 	    @event.in_front_of(self, 30)
-		@event.collide(pool-[self]) do |entity|
+		@event.collide(pool, self) do |entity|
 		  if entity.status == :guarding
 		    entity.status = :blocking
 			self.apply_force(-direction.with_norm(75))
@@ -152,7 +152,7 @@ class TestPlayer < Player
 		apply_force(direction.with_norm(100))
 	  else
 	    @event.in_front_of(self, 15)
-		@event.collide(pool-[self]) do |entity|
+		@event.collide(pool, self) do |entity|
 		  entity.apply_force(direction.with_norm(125))
 		  entity.status = :tumbling
 		  @event = nil

@@ -3,10 +3,9 @@ class Entity
   include Corporeal #x, y, moves_to, advances, collides?
   include Physical #physics
   
-  attr_accessor :tag, :body, :velocity
+  attr_accessor :body, :velocity
   
-  def initialize(tag, body, velocity = Vector.new(0, 0))
-    @tag = tag
+  def initialize(body, velocity = Vector.new(0, 0))
 	@body = body
 	@velocity = velocity
   end

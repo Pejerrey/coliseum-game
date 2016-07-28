@@ -5,13 +5,14 @@ class WorldPlaytest < World
     super()
     case @director
 	when :intro_init
-	  @object_pool << Picture.new(:sand, Still.new('sand.png'),
-	                              $window.width/2, $window.height/2)
-	  @object_pool << TestPlayer.new(:p_1, Circle.new($window.width/2-100, $window.height/2, 12),
-	                                 Controller.new(W, S, A, D, G, H, J))
-	  @object_pool << TestPlayer.new(:p_2, Circle.new($window.width/2+100, $window.height/2, 12),
-	                                 Controller.new(UP, DOWN, LEFT, RIGHT, COMMA, PERIOD, SLASH))
-	  @object_pool << StaticEntity.new(:e_field, InverseCircle.new($window.width/2, $window.height/2, 500))
+	  @object_pool[:p_1] =
+	    TestPlayer.new(Circle.new($window.width/2-100, $window.height/2, 12),
+	                   Controller.new(W, S, A, D, G, H, J))
+	  @object_pool[:p_2] =
+	    TestPlayer.new(Circle.new($window.width/2+100, $window.height/2, 12),
+	                   Controller.new(UP, DOWN, LEFT, RIGHT, COMMA, PERIOD, SLASH))
+	  @object_pool[:e_field] =
+	    StaticEntity.new(InverseCircle.new($window.width/2, $window.height/2, 500))
 	  obj(:p_1).target = obj(:p_2)
 	  obj(:p_2).target = obj(:p_1)
 	  @timer = Timer.new()

@@ -3,16 +3,16 @@ class Event
   include DebugDrawable
   
   attr_accessor :body
-  def initialize(tag = :inner, body)
-    @tag = tag
+  def initialize(body)
     @body = body
   end
   
-  def collide(entity_pool)
+  def collide(entity_pool, *exceptions)
 	entity_pool.each do |entity|
+	  next if exceptions.include?(entity)
 	  if @body.collides?(entity.body)
 	    yield(entity)
-		return   ##Can I erase the event here?
+		return
 	  end
 	end
   end
