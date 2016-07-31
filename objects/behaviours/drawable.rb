@@ -14,6 +14,6 @@ module Drawable
 
   #Loop
   def draw()
-    image.draw(body.x, body.y) if image
+    image.draw(body.x, body.y, 0, body.direction.angle) if image
   end
 end

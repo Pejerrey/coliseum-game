@@ -27,6 +27,10 @@ class Player
 	move(delta)
   end
   
+  def draw()
+    @image.draw(x, y, y, angle = 0)
+  end
+  
   def debug_draw()
     body.draw()
 	(velocity/2).draw(body.x, body.y)

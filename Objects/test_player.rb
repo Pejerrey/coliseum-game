@@ -17,10 +17,10 @@ class TestPlayer < Player
     super()
 	if shield_life > 0
 	  if info == 1
-	    GREY_BAR.draw_rot(50, 50, 0, 0,
+	    GREY_BAR.draw_rot(50, 50, TOP, 0,
 	  	                  0, 0.5,  @shield_life, 1)
 	  elsif info == 2
-	    GREY_BAR.draw_rot($window.width - 50, $window.height - 50, 0, 0,
+	    GREY_BAR.draw_rot($window.width - 50, $window.height - 50, TOP, 0,
 	  	                  1, 0.5,  @shield_life, 1)
 	  end
 	end

@@ -8,6 +8,8 @@ module Constants
   #Math
   INF = Float::INFINITY
   EPSILON = 1e-02
+  TOP = 100_000
+  BOTTOM = -100_000
 
   #Colors
   WHITE = Gosu::Color::WHITE
