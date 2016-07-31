@@ -4,8 +4,8 @@ class TestPlayer < Player
   
   attr_accessor :shield_life, :shield_endurance
   
-  def initialize(body, controller, z = nil)
-    super(body, controller, z)
+  def initialize(body, controller, info = 0)
+    super(body, controller, info)
 	load_assets()
 	@shield_endurance = 50
 	@shield_life = @shield_endurance
@@ -16,13 +16,13 @@ class TestPlayer < Player
   def draw()
     super()
 	if shield_life > 0
-	  #if tag == :p_1
-	  #  GREY_BAR.draw_rot(50, 50, 0, 0,
-	  #	                  0, 0.5,  @shield_life, 1)
-	  #elsif tag == :p_2
-	  #  GREY_BAR.draw_rot($window.width - 50, $window.height - 50, 0, 0,
-	  #	                  1, 0.5,  @shield_life, 1)
-	  #end
+	  if info == 1
+	    GREY_BAR.draw_rot(50, 50, 0, 0,
+	  	                  0, 0.5,  @shield_life, 1)
+	  elsif info == 2
+	    GREY_BAR.draw_rot($window.width - 50, $window.height - 50, 0, 0,
+	  	                  1, 0.5,  @shield_life, 1)
+	  end
 	end
   end
   

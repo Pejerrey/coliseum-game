@@ -29,7 +29,7 @@ module AssetsManager
       (0...sequence.size).step(2).each do |i|
 	    sequence[i] += "_" + suf_file + ".bmp"
 	  end
-	  assets[:"#{pre_tag}_#{dir}"] = Loop.new(sequence, z, scale_x, scale_y)
+	  assets[:"#{pre_tag}_#{dir}"] = Loop.new(sequence, z, fscale_x, scale_y)
 	end
   end
 end

@@ -6,8 +6,8 @@ class Player
   include Controllable
   
   ##Constructor
-  attr_accessor :body, :velocity, :controller, :status, :event, :timer, :image, :current_frame, :target, :assets
-  def initialize(body, controller, z = nil)
+  attr_accessor :body, :velocity, :controller, :status, :event, :timer, :image, :current_frame, :target, :assets, :info
+  def initialize(body, controller, info = 0)
 	@body = body
 	@velocity = Vector.new(0, 0)
 	@controller = controller
@@ -17,6 +17,7 @@ class Player
 	@image = nil
 	@target = nil
 	@assets = Hash.new()
+	@info = info #0 - no info, 1 - player1, 2 -player2
   end
   
   

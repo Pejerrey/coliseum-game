@@ -7,10 +7,10 @@ class WorldPlaytest < World
 	when :intro_init
 	  @object_pool[:p_1] =
 	    TestPlayer.new(Circle.new($window.width/2-100, $window.height/2, 12),
-	                   Controller.new(W, S, A, D, G, H, J))
+	                   Controller.new(W, S, A, D, G, H, J), 1)
 	  @object_pool[:p_2] =
 	    TestPlayer.new(Circle.new($window.width/2+100, $window.height/2, 12),
-	                   Controller.new(UP, DOWN, LEFT, RIGHT, COMMA, PERIOD, SLASH))
+	                   Controller.new(UP, DOWN, LEFT, RIGHT, COMMA, PERIOD, SLASH), 2)
 	  @object_pool[:e_field] =
 	    StaticEntity.new(InverseCircle.new($window.width/2, $window.height/2, 500))
 	  obj(:p_1).target = obj(:p_2)
