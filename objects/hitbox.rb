@@ -1,4 +1,4 @@
-class Event
+class Hitbox
   include Corporeal
   include DebugDrawable
   

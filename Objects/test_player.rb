@@ -103,10 +103,10 @@ class TestPlayer < Player
   def slash(pool)
     regular_event(13, 2, 10) do |init|
 	  if init
-	    @event = Event.new(Rectangle.new(0, 0, 40, 25))
+	    @hitbox = Hitbox.new(Rectangle.new(0, 0, 40, 25))
 	  else
-	    @event.in_front_of(self, 25)
-		@event.collide(pool, self) do |entity|
+	    @hitbox.in_front_of(self, 25)
+		@hitbox.collide(pool, self) do |entity|
 		  if entity.status == :guarding
 		    entity.status = :blocking
 		    self.apply_force(-direction.with_norm(75))
@@ -116,7 +116,7 @@ class TestPlayer < Player
 		    entity.apply_force(direction.with_norm(50))
 		    entity.status = :hurting
 		  end
-		  @event = nil
+		  @hitbox = nil
 	    end
 	  end
 	end
@@ -125,10 +125,10 @@ class TestPlayer < Player
   def thrust(pool)
     regular_event(15, 2, 15) do |init|
 	  if init
-	    @event = Event.new(Rectangle.new(0, 0, 10, 35))
+	    @hitbox = Hitbox.new(Rectangle.new(0, 0, 10, 35))
 	  else
-	    @event.in_front_of(self, 30)
-		@event.collide(pool, self) do |entity|
+	    @hitbox.in_front_of(self, 30)
+		@hitbox.collide(pool, self) do |entity|
 		  if entity.status == :guarding
 		    entity.status = :blocking
 			self.apply_force(-direction.with_norm(75))
@@ -138,7 +138,7 @@ class TestPlayer < Player
 		    entity.apply_force(direction.with_norm(50))
 		    entity.status = :hurting
 		  end
-		  @event = nil
+		  @hitbox = nil
 	    end
 	  end
 	end
@@ -147,15 +147,15 @@ class TestPlayer < Player
   def knock(pool)
     regular_event(4, 6, 2) do |init|
 	  if init
-	    @event = Event.new(Rectangle.new(0, 0, 25, 20))
+	    @hitbox = Hitbox.new(Rectangle.new(0, 0, 25, 20))
 		velocity.reset()
 		apply_force(direction.with_norm(100))
 	  else
-	    @event.in_front_of(self, 15)
-		@event.collide(pool, self) do |entity|
+	    @hitbox.in_front_of(self, 15)
+		@hitbox.collide(pool, self) do |entity|
 		  entity.apply_force(direction.with_norm(125))
 		  entity.status = :tumbling
-		  @event = nil
+		  @hitbox = nil
 	    end
 	  end
 	end

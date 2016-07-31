@@ -6,13 +6,13 @@ class Player
   include Controllable
   
   ##Constructor
-  attr_accessor :body, :velocity, :controller, :status, :event, :timer, :image, :current_frame, :target, :assets, :info
+  attr_accessor :body, :velocity, :controller, :status, :hitbox, :timer, :image, :current_frame, :target, :assets, :info
   def initialize(body, controller, info = 0)
 	@body = body
 	@velocity = Vector.new(0, 0)
 	@controller = controller
 	@status = :idling
-	@event = nil
+	@hitbox = nil
 	@current_frame = 0
 	@image = nil
 	@target = nil
@@ -31,7 +31,7 @@ class Player
     body.draw()
 	(velocity/2).draw(body.x, body.y)
 	(body.direction*20).draw(body.x, body.y, FUCHSIA)
-	event.debug_draw() if event
+	@hitbox.debug_draw() if @hitbox
 	case status
 	when :idling, :running
 	  body.c = YELLOW
@@ -109,15 +109,15 @@ class Player
 	  case frame
 	  when (startup + 1)..(startup + active) #active
 	    yield(true)	if frame == startup + 1
-	    yield(false) if @event
+	    yield(false) if @hitbox
 	  
 	  when (startup + active + recovery + 1) #exit
-	    @event = nil
+	    @hitbox = nil
 	    reset_to(:idling)
 		return
 	  
 	  when (startup + active + 1)
-	    @event = nil #doesn't really do much, for debug purposes.
+	    @hitbox = nil #doesn't really do much, for debug purposes.
 	  end
 	end
   end
