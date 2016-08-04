@@ -1,4 +1,3 @@
 TODO
 -Change combo/command to receive numbers instead of symbols
--Figure out the "z" draw bullshit
 -Add a camera

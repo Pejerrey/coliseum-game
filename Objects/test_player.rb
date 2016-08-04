@@ -92,7 +92,7 @@ class TestPlayer < Player
   end
   
   def run()
-	velocity.apply(movement_direction(1500 * delta))
+	velocity.apply(movement_direction(1200 * delta))
 	velocity.trim(160)
 	direction.angle = velocity.angle unless velocity.zero?
 	@image = angled_graphic(:run)
@@ -153,9 +153,11 @@ class TestPlayer < Player
 	  else
 	    @hitbox.in_front_of(self, 15)
 		@hitbox.collide(pool, self) do |entity|
-		  entity.apply_force(direction.with_norm(125))
-		  entity.status = :tumbling
-		  @hitbox = nil
+		  unless entity.status == :hurting
+		    entity.apply_force(direction.with_norm(125))
+		    entity.status = :tumbling
+		    @hitbox = nil
+		  end
 	    end
 	  end
 	end
